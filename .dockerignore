@@ -1,8 +1,0 @@
-# flyctl launch added from .gitignore
-**\__pycache__
-**\*.zip
-**\lambda-deploy
-**\.env
-**\.pytest_cache
-**\*.pyc
-fly.toml
