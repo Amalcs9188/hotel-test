@@ -10,7 +10,8 @@ import logging
 
 # Import configuration and scraper
 from config import API_TITLE, API_VERSION, API_DESCRIPTION, VALID_API_KEYS, ENABLE_MOCK_FALLBACK
-from scraper import fetch_hotels  # Basic scraper
+from scraper import fetch_hotels  # Basic scraper (fallback)
+from scraper_playwright import fetch_hotels_advanced, fetch_hotel_details  # Advanced Playwright scraper
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -22,6 +23,11 @@ app = FastAPI(
     version=API_VERSION,
     description=API_DESCRIPTION
 )
+
+@app.get("/")
+def health_check():
+    """Health check endpoint"""
+    return {"status": "ok", "service": "Hotel API Scraper", "version": API_VERSION}
 
 # --- 1. MODELS ---
 class HotelResponse(BaseModel):
@@ -61,22 +67,32 @@ def fetch_hotel_data_mock(city: str):
     return []
 
 def fetch_hotel_data_real(city: str, checkin: Optional[str] = None, checkout: Optional[str] = None):
-    """Fetch real hotel data from Booking.com using basic scraper"""
+    """Fetch real hotel data from Booking.com using Playwright"""
     try:
-        logger.info(f"Fetching hotel data for {city} using basic scraper")
+        logger.info(f"Fetching real hotel data for {city} using Playwright")
         
-        # Use basic scraper (Lambda ZIP compatible)
-        hotels = fetch_hotels(city, checkin, checkout, use_cache=True)
+        # Try advanced Playwright scraper first
+        hotels = fetch_hotels_advanced(city, checkin, checkout)
         
         if hotels:
-            logger.info(f"✅ Successfully fetched {len(hotels)} hotels for {city}")
+            logger.info(f"✅ Successfully fetched {len(hotels)} hotels for {city} using Playwright")
             return hotels
-        
-        # Fallback to mock data if enabled
-        logger.warning(f"No hotels found for {city}, using mock data fallback")
-        if ENABLE_MOCK_FALLBACK:
-            return fetch_hotel_data_mock(city)
-        return []
+        else:
+            logger.warning(f"Playwright scraper returned no results for {city}")
+            
+            # Fallback to basic scraper
+            logger.info(f"Trying basic scraper as fallback for {city}")
+            hotels = fetch_hotels(city, checkin, checkout, use_cache=True)
+            
+            if hotels:
+                logger.info(f"Basic scraper found {len(hotels)} hotels for {city}")
+                return hotels
+            
+            # Final fallback to mock data
+            logger.warning(f"No hotels found for {city}, using mock data fallback")
+            if ENABLE_MOCK_FALLBACK:
+                return fetch_hotel_data_mock(city)
+            return []
             
     except Exception as e:
         logger.error(f"Error fetching hotel data: {e}")
@@ -179,5 +195,38 @@ async def root():
             "Fallback to mock data if scraping fails"
         ]
     }
+
+# --- 6. HOTEL DETAILS ENDPOINT ---
+@app.get("/hotels/details", response_model=HotelDetails)
+async def get_hotel_details(
+    hotel_url: str,
+    api_key: str = Depends(get_api_key)
+):
+    """
+    Get comprehensive details for a specific hotel using its Booking.com URL.
+    
+    **Authentication**: Include your API key in the `access_token` header.
+    
+    **Parameters**:
+    - **hotel_url**: Full Booking.com hotel URL (e.g., https://www.booking.com/hotel/in/taj-mahal-palace.html)
+    
+    **Returns**: Comprehensive hotel details including amenities, reviews, photos, room types, and policies.
+    
+    **Note**: This endpoint takes 20-30 seconds as it scrapes detailed information.
+    """
+    logger.info(f"API request for hotel details: {hotel_url}")
+    
+    # Run in thread pool for async compatibility
+    import asyncio
+    from concurrent.futures import ThreadPoolExecutor
+    
+    loop = asyncio.get_event_loop()
+    with ThreadPoolExecutor() as executor:
+        hotel_data = await loop.run_in_executor(executor, fetch_hotel_details, hotel_url)
+    
+    if not hotel_data:
+        raise HTTPException(status_code=404, detail="Could not fetch hotel details")
+    
+    return hotel_data
 
 # Trigger reload

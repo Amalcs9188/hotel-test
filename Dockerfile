@@ -1,40 +1,19 @@
-# Use AWS Lambda Python base image
-FROM public.ecr.aws/lambda/python:3.11
+# Use official Playwright image (includes browsers & dependencies)
+FROM mcr.microsoft.com/playwright/python:v1.40.0-jammy
 
-# Install Playwright dependencies
-RUN yum install -y \
-    atk \
-    cups-libs \
-    gtk3 \
-    libXcomposite \
-    alsa-lib \
-    libXcursor \
-    libXdamage \
-    libXext \
-    libXi \
-    libXrandr \
-    libXScrnSaver \
-    libXtst \
-    pango \
-    at-spi2-atk \
-    libXt \
-    xorg-x11-server-Xvfb \
-    xorg-x11-xauth \
-    dbus-glib \
-    dbus-glib-devel \
-    nss \
-    mesa-libgbm
+# Set working directory
+WORKDIR /app
 
-# Copy requirements and install Python dependencies
-COPY requirements.txt ${LAMBDA_TASK_ROOT}/
-RUN pip3 install --no-cache-dir -r ${LAMBDA_TASK_ROOT}/requirements.txt
+# Install Python dependencies
+COPY requirements.txt .
 
-# Install Playwright browsers
-RUN playwright install chromium
-RUN playwright install-deps chromium
 
 # Copy application code
-COPY *.py ${LAMBDA_TASK_ROOT}/
+COPY . .
 
-# Set the CMD to your handler
-CMD [ "lambda_function.lambda_handler" ]
+# Expose port (Railway sets PORT env var)
+ENV PORT=8000
+EXPOSE $PORT
+
+# Run the application
+CMD uvicorn main:app --host 0.0.0.0 --port $PORT
