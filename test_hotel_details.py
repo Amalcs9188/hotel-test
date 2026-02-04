@@ -2,17 +2,22 @@
 Test hotel details endpoint
 """
 import requests
+import time
 
 url = "http://127.0.0.1:8000/hotels/details"
 headers = {"access_token": "user_123_secret_key"}
-params = {"hotel_url": "https://www.booking.com/hotel/in/3bhk-villa-10-mins-from-lulu-mall.html"}
+params = {"hotel_url": "https://www.booking.com/hotel/in/the-taj-mahal-palace-mumbai.html"}
 
 print("Testing hotel details API...")
 print(f"URL: {url}")
 print(f"Hotel URL: {params['hotel_url']}")
-print("\nThis may take 20-30 seconds...\n")
-
+print("\nRunning API call...")
+start_time = time.time()
 response = requests.get(url, headers=headers, params=params, timeout=60)
+end_time = time.time()
+
+duration = end_time - start_time
+print(f"Time Taken: {duration:.2f} seconds")
 
 print(f"Status Code: {response.status_code}")
 

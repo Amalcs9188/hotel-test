@@ -1,6 +1,6 @@
 """
 Advanced web scraper using Playwright to bypass anti-bot protection
-This scraper can successfully fetch real hotel data from Booking.com
+This scraper uses a stable launch-per-request model for FastAPI compatibility.
 """
 
 from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeout
@@ -23,6 +23,41 @@ class PlaywrightBookingScraper:
         self.base_url = BOOKING_CONFIG["base_url"]
         self.timeout = SCRAPER_CONFIG["timeout"] * 1000  # Convert to milliseconds
         self.max_retries = SCRAPER_CONFIG["max_retries"]
+
+    @staticmethod
+    def setup_route(page):
+        """Aggressive resource and script blocking (relaxed for reliability)"""
+        def handle_route(route):
+            url = route.request.url
+            resource_type = route.request.resource_type
+            
+            # Block heavy/tracking resources
+            if resource_type in ["font", "media"]:
+                return route.abort()
+            
+            # Block third-party trackers aggressively
+            blocked_domains = ["google-analytics.com", "doubleclick.net", "facebook.net", "adgoogles.com"]
+            if any(domain in url for domain in blocked_domains):
+                return route.abort()
+                
+            if resource_type == "image":
+                # Allow images from booking CDN only
+                if "bstatic.com" in url or "booking.com" in url:
+                    return route.continue_()
+                return route.abort()
+            
+            # Allow all booking-related scripts and AJAX calls
+            if "booking.com" in url or "bstatic.com" in url:
+                return route.continue_()
+            
+            # Block other third-party scripts
+            if resource_type == "script":
+                return route.abort()
+            
+            return route.continue_()
+            
+        page.route("**/*", handle_route)
+
         
     def _build_search_url(self, city: str, checkin: Optional[str] = None, checkout: Optional[str] = None) -> str:
         """Build Booking.com search URL"""
@@ -50,740 +85,353 @@ class PlaywrightBookingScraper:
         return url
     
     def search_hotels(self, city: str, checkin: Optional[str] = None, checkout: Optional[str] = None) -> List[Dict]:
-        """
-        Search for hotels using Playwright (bypasses anti-bot protection)
-        
-        Args:
-            city: City name to search
-            checkin: Check-in date (YYYY-MM-DD format)
-            checkout: Check-out date (YYYY-MM-DD format)
-            
-        Returns:
-            List of hotel dictionaries
-        """
+        """Search hotels using launch-per-request model for threading stability"""
         url = self._build_search_url(city, checkin, checkout)
         
         for attempt in range(self.max_retries):
             try:
-                logger.info(f"Playwright attempt {attempt + 1}/{self.max_retries} for {city}")
+                logger.info(f"Playwright search attempt {attempt + 1}/{self.max_retries} for {city}")
                 
                 with sync_playwright() as p:
-                    # Launch browser with stealth settings
                     browser = p.chromium.launch(
                         headless=True,
-                        args=[
-                            '--no-sandbox',
-                            '--disable-setuid-sandbox',
-                            '--disable-dev-shm-usage',
-                            '--disable-blink-features=AutomationControlled'
-                        ]
+                        args=['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-blink-features=AutomationControlled']
                     )
                     
-                    # Create context with realistic settings
                     context = browser.new_context(
-                        viewport={'width': 1920, 'height': 1080},
-                        user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-                        locale='en-US',
-                        timezone_id='America/New_York'
+                        user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
+                        viewport={'width': 1280, 'height': 800},
+                        locale='en-US'
                     )
                     
-                    page = context.new_page()
-                    logger.info(f"Navigating to: {url}")
-                    
-                    # Performance optimization: Block light resources (fonts, media)
-                    # Keeping images and stylesheets for reliable heart/card rendering
-                    page.route("**/*", lambda route: route.abort() if route.request.resource_type in ["font", "media"] else route.continue_())
-                    
-                    page.goto(url, wait_until='domcontentloaded', timeout=self.timeout)
-                    
-                    # Wait for hotel cards to load
                     try:
-                        page.wait_for_selector('[data-testid="property-card"]', timeout=15000)
-                        logger.info("Hotel cards loaded successfully!")
-                    except PlaywrightTimeout:
-                        logger.warning("Timeout waiting for hotel cards, trying alternative selector")
-                        # Try alternative selectors
-                        page.wait_for_selector('.sr_item', timeout=10000)
-                    
-                    # Small delay to ensure content is fully loaded
-                    time.sleep(2)
-                    
-                    # Extract hotel data using JavaScript
-                    hotels_data = page.evaluate('''() => {
-                        const hotels = [];
-                        const cards = document.querySelectorAll('[data-testid="property-card"]');
+                        page = context.new_page()
+                        PlaywrightBookingScraper.setup_route(page)
                         
-                        cards.forEach((card, index) => {
-                            if (index >= 10) return; // Limit to 10 hotels
-                            
-                            try {
-                                // Extract hotel name
-                                const nameElem = card.querySelector('[data-testid="title"]');
-                                const name = nameElem ? nameElem.textContent.trim() : null;
-                                
-                                if (!name) return;
-                                
-                                // Extract hotel URL - try multiple selectors
-                                let url = null;
-                                const linkSelectors = [
-                                    'a[data-testid="title-link"]',
-                                    'a[href*="/hotel/"]',
-                                    'a.e13098a59f',
-                                    'h3 a',
-                                    'a[aria-label]'
-                                ];
-                                
-                                for (const selector of linkSelectors) {
-                                    const linkElem = card.querySelector(selector);
-                                    if (linkElem) {
-                                        const href = linkElem.getAttribute('href');
-                                        if (href && href.includes('/hotel/')) {
-                                            // Convert relative URL to absolute
-                                            url = href.startsWith('http') ? href : 'https://www.booking.com' + href;
-                                            // Remove query parameters for cleaner URL
-                                            url = url.split('?')[0];
-                                            break;
-                                        }
-                                    }
-                                }
-                                
-                                // Extract price
-                                let price = 0;
-                                const priceSelectors = [
-                                    '[data-testid="price-and-discounted-price"]',
-                                    '.prco-valign-middle-helper',
-                                    '.bui-price-display__value',
-                                    '[data-testid="price-for-x-nights"]'
-                                ];
-                                
-                                for (const selector of priceSelectors) {
-                                    const priceElem = card.querySelector(selector);
+                        logger.info(f"Navigating to search results: {url}")
+                        page.goto(url, wait_until='domcontentloaded', timeout=self.timeout)
+                        
+                        try:
+                            page.wait_for_selector('[data-testid="property-card"]', timeout=10000)
+                        except: pass
+                        
+                        # Small delay for content settling
+                        time.sleep(1)
+                        
+                        hotels_data = page.evaluate('''() => {
+                            const hotels = [];
+                            const cards = document.querySelectorAll('[data-testid="property-card"]');
+                            cards.forEach((card, index) => {
+                                if (index >= 10) return;
+                                try {
+                                    const nameElem = card.querySelector('[data-testid="title"]');
+                                    const name = nameElem ? nameElem.textContent.trim() : null;
+                                    if (!name) return;
+                                    
+                                    let url = null;
+                                    const link = card.querySelector('a[data-testid="title-link"]');
+                                    if (link) url = link.href.split('?')[0];
+                                    
+                                    let price = 0;
+                                    const priceElem = card.querySelector('[data-testid="price-and-discounted-price"]');
                                     if (priceElem) {
-                                        const priceText = priceElem.textContent;
-                                        const priceMatch = priceText.match(/[\d,]+/);
-                                        if (priceMatch) {
-                                            price = parseFloat(priceMatch[0].replace(/,/g, ''));
-                                            break;
+                                        const m = priceElem.textContent.match(/[\\d,]+/);
+                                        if (m) price = parseFloat(m[0].replace(/,/g, ''));
+                                    }
+                                    
+                                    let rating = 0;
+                                    const scoreElem = card.querySelector('[data-testid="review-score"]');
+                                    if (scoreElem) {
+                                        const m = scoreElem.textContent.match(/([\\d.]+)/);
+                                        if (m) {
+                                            const v = parseFloat(m[1]);
+                                            rating = v > 5 ? v / 2 : v;
                                         }
                                     }
-                                }
-                                
-                                // Extract rating - try multiple selectors
-                                let rating = 0;
-                                const ratingSelectors = [
-                                    '[data-testid="review-score"]',
-                                    '.b5cd09854e',
-                                    '[aria-label*="Scored"]',
-                                    '.bui-review-score__badge'
-                                ];
-                                
-                                for (const selector of ratingSelectors) {
-                                    const ratingElem = card.querySelector(selector);
-                                    if (ratingElem) {
-                                        // Try to find the numeric rating
-                                        const ratingDiv = ratingElem.querySelector('div[aria-label]') || ratingElem;
-                                        const ariaLabel = ratingDiv.getAttribute('aria-label');
-                                        
-                                        if (ariaLabel) {
-                                            const ratingMatch = ariaLabel.match(/([\d.]+)/);
-                                            if (ratingMatch) {
-                                                const ratingValue = parseFloat(ratingMatch[1]);
-                                                // Convert from 10-scale to 5-scale if needed
-                                                rating = ratingValue > 5 ? ratingValue / 2 : ratingValue;
-                                                break;
-                                            }
-                                        }
-                                        
-                                        // Try direct text content
-                                        const ratingText = ratingElem.textContent;
-                                        const textMatch = ratingText.match(/([\d.]+)/);
-                                        if (textMatch) {
-                                            const ratingValue = parseFloat(textMatch[1]);
-                                            rating = ratingValue > 5 ? ratingValue / 2 : ratingValue;
-                                            break;
-                                        }
-                                    }
-                                }
-                                
-                                // Generate hotel ID from name
-                                const hotel_id = Math.abs(name.split('').reduce((a, b) => {
-                                    a = ((a << 5) - a) + b.charCodeAt(0);
-                                    return a & a;
-                                }, 0)) % 100000;
-                                
-                                hotels.push({
-                                    hotel_id: hotel_id,
-                                    name: name,
-                                    price: price,
-                                    currency: 'INR',
-                                    rating: Math.round(rating * 10) / 10,
-                                    url: url
-                                });
-                            } catch (e) {
-                                console.log('Error parsing hotel card:', e);
-                            }
-                        });
+                                    
+                                    const hotel_id = Math.abs(name.split('').reduce((a, b) => {
+                                        a = ((a << 5) - a) + b.charCodeAt(0);
+                                        return a & a;
+                                    }, 0)) % 100000;
+                                    
+                                    hotels.push({
+                                        hotel_id, name, price, currency: 'INR', 
+                                        rating: Math.round(rating * 10) / 10, url 
+                                    });
+                                } catch (e) {}
+                            });
+                            return hotels;
+                        }''')
                         
-                        return hotels;
-                    }''')
-                    
-                    browser.close()
-                    
-                    if hotels_data and len(hotels_data) > 0:
-                        logger.info(f"✅ Successfully scraped {len(hotels_data)} hotels for {city}")
-                        return hotels_data
-                    else:
-                        logger.warning(f"No hotels found for {city}")
-                        return []
-                
-            except PlaywrightTimeout as e:
-                logger.error(f"Playwright timeout on attempt {attempt + 1}: {e}")
-                if attempt < self.max_retries - 1:
-                    time.sleep(SCRAPER_CONFIG["retry_delay"] * (attempt + 1))
-                else:
-                    logger.error(f"Failed after {self.max_retries} attempts")
-                    return []
-                    
+                        if hotels_data:
+                            logger.info(f"✅ Scraped {len(hotels_data)} hotels")
+                            return hotels_data
+                    finally:
+                        browser.close()
             except Exception as e:
-                logger.error(f"Unexpected error on attempt {attempt + 1}: {e}")
+                logger.error(f"Search error on attempt {attempt + 1}: {e}")
                 if attempt < self.max_retries - 1:
-                    time.sleep(SCRAPER_CONFIG["retry_delay"] * (attempt + 1))
-                else:
-                    logger.error(f"Failed after {self.max_retries} attempts")
-                    return []
-        
+                    time.sleep(1)
         return []
 
 
-# Update the main fetch function to use Playwright
 def fetch_hotels_advanced(city: str, checkin: Optional[str] = None, checkout: Optional[str] = None) -> List[Dict]:
-    """
-    Fetch hotels using advanced Playwright scraper
-    
-    Args:
-        city: City name to search
-        checkin: Check-in date (YYYY-MM-DD format)
-        checkout: Check-out date (YYYY-MM-DD format)
-        
-    Returns:
-        List of hotel dictionaries
-    """
     scraper = PlaywrightBookingScraper()
     return scraper.search_hotels(city, checkin, checkout)
 
 
 def fetch_hotel_details(hotel_url: str) -> Optional[Dict]:
-    """
-    Fetch detailed information about a specific hotel
-    
-    Args:
-        hotel_url: Full Booking.com hotel URL
-        
-    Returns:
-        Dictionary with comprehensive hotel details
-    """
+    """Fetch hotel details with launch-per-request model"""
     try:
-        logger.info(f"Fetching hotel details from: {hotel_url}")
+        logger.info(f"Fetching hotel details: {hotel_url}")
         with sync_playwright() as p:
-            # Launch browser with enhanced stealth settings
             browser = p.chromium.launch(
                 headless=True,
-                args=[
-                    '--disable-blink-features=AutomationControlled',
-                    '--no-sandbox',
-                    '--disable-setuid-sandbox',
-                    '--disable-dev-shm-usage'
-                ]
+                args=['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-blink-features=AutomationControlled']
             )
+            
             context = browser.new_context(
-                viewport={'width': 1920, 'height': 1080},
-                user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+                user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                viewport={'width': 1280, 'height': 800},
                 locale='en-US',
-                timezone_id='America/New_York'
+                timezone_id='Asia/Kolkata',
+                permissions=['geolocation']
             )
-            page = context.new_page()
             
-            # Mask webdriver property
-            page.add_init_script("""
-                Object.defineProperty(navigator, 'webdriver', {
-                    get: () => undefined
-                });
-            """)
-            
-            # Performance optimization: Block light resources (fonts, media)
-            # Keeping images and stylesheets as they are often needed for correct DOM rendering/scripts
-            page.route("**/*", lambda route: route.abort() if route.request.resource_type in ["font", "media"] else route.continue_())
-            
-            # Restore headers for better compatibility
-            page.set_extra_http_headers({
-                'Accept-Language': 'en-US,en;q=0.9',
-                'Referer': 'https://www.google.com/'
-            })
-            
-            # Pipe console logs
-            page.on('console', lambda msg: logger.info(f"BROWSER: {msg.text}"))
-            
-            # Small delay to make behavior more human-like
-            time.sleep(1)
-            
-            # Navigate to hotel page
-            logger.info(f"Navigating to hotel page...")
-            page.goto(hotel_url, wait_until='domcontentloaded', timeout=60000)
-            
-            # --- FAST-EXIT STRATEGY ---
-            # Attempt immediate extraction from JSON-LD/Initial DOM
             try:
-                fast_data = page.evaluate('''() => {
-                    const d = { name: '', rating: 0, reviews: [], amenities: [] };
-                    
-                    // JSON-LD
-                    const scripts = document.querySelectorAll('script[type="application/ld+json"]');
-                    scripts.forEach(s => {
-                        try {
-                            const data = JSON.parse(s.textContent);
-                            if (data['@type'] === 'Hotel' || data['@type'] === 'Accommodation') {
-                                d.name = data.name;
-                                if (data.aggregateRating) d.rating = parseFloat(data.aggregateRating.ratingValue);
-                                if (data.review) d.reviews = Array.isArray(data.review) ? data.review : [data.review];
-                                if (data.amenityFeature) d.amenities = data.amenityFeature;
-                            }
-                        } catch(e){}
-                    });
-                    
-                    // Basic DOM Name
-                    if (!d.name) {
-                        const h = document.querySelector('h2.pp-header__title, #hp_hotel_name');
-                        if (h) d.name = h.textContent.trim();
-                    }
-                    
-                    return d;
-                }''')
+                page = context.new_page()
+                page.add_init_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
+                PlaywrightBookingScraper.setup_route(page)
+
+                logger.info(f"Navigating to hotel page...")
+                try:
+                    # Use domcontentloaded for initial burst, but we'll need to wait for stabilization
+                    page.goto(hotel_url, wait_until='domcontentloaded', timeout=30000)
+                except Exception as e:
+                    logger.warning(f"Initial navigation warning: {e}")
                 
-                # STRICT FAST-EXIT: Only skip scroll if we have Name, 3+ Reviews, AND 5+ Amenities
-                if fast_data['name'] and len(fast_data['reviews']) >= 3 and len(fast_data['amenities']) >= 5:
-                    logger.info(f"🚀 Fast-Exit: Found {len(fast_data['reviews'])} reviews and {len(fast_data['amenities'])} amenities!")
-                    # We still need to run the full extraction to standardize the format,
-                    # but we can skip the scrolling delays.
-                    pass # Continue to extraction, but skip scrolling
-                else:
-                    logger.info("Fast-Exit insufficient, proceeding to robust load...")
-                    
-                    # Wait for core content to render since we only waited for domcontentloaded
+                # 1. Handle WAF Challenge
+                if page.query_selector('#challenge-container'):
+                    logger.info("🛡️ AWS WAF challenge detected. Waiting for resolution...")
                     try:
-                        page.wait_for_selector('h1, h2, [data-testid="property-name"]', timeout=10000)
+                        page.wait_for_selector('#challenge-container', state='hidden', timeout=12000)
+                        logger.info("✅ Challenge resolved!")
                     except:
-                        logger.warning("Fallback: Core content timeout")
-                    
-                    # Scroll only if fast-exit didn't find enough
-                    for i in range(1, 4):
-                        page.evaluate(f"window.scrollTo(0, {i * 1500})")
-                        time.sleep(1.0)
-                    # Helper: Scroll to bottom once to ensure footer triggers
-                    page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
-                    time.sleep(1.0)
-            except Exception as e:
-                logger.warning(f"Fast-Exit check failed: {e}")
-            
-            # --- END FAST-EXIT ---
-            
-            # If no review cards visible, try to click the reviews button/tab to load them
-            try:
-                # Specific wait for reviews if we are in fallback mode
-                if not page.query_selector('[data-testid="review-card"]'):
-                     page.wait_for_selector('[data-testid="review-card"]', timeout=5000)
-            except: pass
+                        logger.warning("WAF challenge did not resolve in time.")
 
-            try:
-                if not page.query_selector('[data-testid="review-card"], .review_item, .c-review-block'):
-                    # Try multiple triggers
-                    for selector in ['[data-testid="read-all-actionable"]', '[data-testid="review-score-read-all"]', '.hp_reviews_count', '#show_reviews_tab', 'text="Read all reviews"']:
-                        review_trigger = page.query_selector(selector)
-                        if review_trigger:
-                            logger.info(f"Attempting to load reviews via click on {selector}...")
-                            review_trigger.scroll_into_view_if_needed()
-                            review_trigger.click(force=True)
-                            # Wait for reviews to load in modal or new section
-                            # Wait for reviews to load in modal or new section
-                            page.wait_for_selector('[data-testid="review-card"], .review_item, .c-review-block, [data-testid="review-author-name"]', timeout=10000)
-                            logger.info("Reviews UI should be visible now.")
-                            time.sleep(1.5)
+                # 2. Stabilization & Interaction
+                # Progressive scroll to trigger lazy loads
+                page.evaluate("window.scrollTo(0, 1000);")
+                time.sleep(0.3)
+                page.evaluate("document.querySelector('#availability_target')?.scrollIntoView();")
+                time.sleep(0.8) # Wait for table load
+                page.evaluate("window.scrollTo(0, 10000);") # Bottom for footer/extras
+                
+                # Trigger Reviews if missing
+                try:
+                    # Check for various review triggers and click the first one found
+                    triggers = [
+                        '#reviews-tab-trigger',
+                        '[data-testid="review-score-link"]',
+                        '[data-testid="review-score-read-all"]',
+                        '[data-testid="read-all-actionable"]',
+                        '.hp_nav_reviews_link'
+                    ]
+                    for selector in triggers:
+                        trigger = page.query_selector(selector)
+                        if trigger and trigger.is_visible():
+                            logger.info(f"Found review trigger {selector}, clicking...")
+                            trigger.scroll_into_view_if_needed()
+                            trigger.click()
+                            time.sleep(1.5) # Wait for AJAX load
                             break
-            except Exception as e:
-                logger.debug(f"Click reviews failed: {e}")
+                except Exception as e:
+                    logger.warning(f"Failed to trigger reviews: {e}")
 
-            
-            # Extract all hotel details using JavaScript with JSON-LD support
-            hotel_data = page.evaluate('''() => {
-                const details = {
-                    name: '',
-                    rating: 0,
-                    address: '',
-                    description: '',
-                    amenities: [],
-                    reviews: [],
-                    photos: [],
-                    room_types: [],
-                    check_in_time: '',
-                    check_out_time: '',
-                    policies: '',
-                    contact_phone: '',
-                    contact_email: ''
-                };
-                
-                // Try to extract data from JSON-LD first
-                const jsonLdElems = document.querySelectorAll('script[type="application/ld+json"]');
-                jsonLdElems.forEach(el => {
+                # Final wait for core content to be present
+                try:
+                    page.wait_for_selector('[data-testid="property-name"], h1, h2', timeout=5000)
+                except: pass
+
+                # --- Extraction Logic ---
+                hotel_data = page.evaluate('''() => {
+                    const d = {
+                        name: '', rating: 0, address: '', description: '',
+                        amenities: [], reviews: [], photos: [], room_types: []
+                    };
+                    
+                    // 1. Basic Info (JSON-LD)
                     try {
-                        const data = JSON.parse(el.textContent);
-                        if (data['@type'] === 'Hotel' || data['@type'] === 'Accommodation' || data['@type'] === 'LodgingBusiness') {
-                            if (data.name) details.name = data.name;
-                            if (data.description) details.description = data.description;
-                            if (data.address) {
-                                if (typeof data.address === 'string') {
-                                    details.address = data.address;
-                                } else {
-                                    details.address = [
-                                        data.address.streetAddress,
-                                        data.address.addressLocality,
-                                        data.address.addressRegion,
-                                        data.address.postalCode,
-                                        data.address.addressCountry
-                                    ].filter(Boolean).join(', ');
-                                }
-                            }
-                            if (data.amenityFeature) {
-                                details.amenities = [];
-                                const amenities = Array.isArray(data.amenityFeature) ? data.amenityFeature : [data.amenityFeature];
-                                amenities.forEach(am => {
-                                   if (typeof am === 'object' && am.name) details.amenities.push({ category: 'General', name: am.name });
-                                   else if (typeof am === 'string') details.amenities.push({ category: 'General', name: am });
-                                });
-                            }
-                            if (data.image) {
-                                const images = Array.isArray(data.image) ? data.image : [data.image];
-                                images.forEach(img => {
-                                    const url = typeof img === 'string' ? img : img.url;
-                                    if (url) details.photos.push({ url });
-                                });
-                            }
-                            if (data.aggregateRating) {
-                                details.rating = data.aggregateRating.ratingValue / 2; // Convert to 5-star scale
-                            }
-                            // Only use JSON-LD reviews as a fallback if DOM is empty later
-                            if (data.review) {
-                                details._jsonld_reviews = Array.isArray(data.review) ? data.review : [data.review];
-                            }
-                        }
-                    } catch (e) {}
-                });
-                
-                // Fallback and refine with DOM selectors
-                if (!details.name) {
-                    const nameSelectors = [
-                        'h2[data-testid="property-name"]',
-                        '.pp-header__title',
-                        'h1',
-                        'h2',
-                        '.hp__hotel-name',
-                        '#hp_hotel_name',
-                        '[data-testid="title"]'
-                    ];
-                    for (const selector of nameSelectors) {
-                        const el = document.querySelector(selector);
-                        if (el) {
-                            details.name = el.textContent.trim().replace(/\\n/g, ' ');
-                            break;
-                        }
-                    }
-                }
-                
-                // If still no name, use title
-                if (!details.name) details.name = document.title.split('-')[0].split('|')[0].trim();
+                        const ld = JSON.parse(document.querySelector('script[type="application/ld+json"]')?.innerText || '{}');
+                        d.name = ld.name || '';
+                        d.rating = ld.aggregateRating?.ratingValue || 0;
+                        d.address = ld.address?.streetAddress || '';
+                        d.description = ld.description || '';
+                    } catch(e) {}
 
-                
-                // Extract rating - try multiple selectors
-                const ratingSelectors = [
-                    '[data-testid="review-score-component"]',
-                    '.b5cd09854e',
-                    '[aria-label*="Scored"]',
-                    '.review-score-badge',
-                    '.bui-review-score__badge',
-                    '[data-testid="review-score"]'
-                ];
-                
-                for (const selector of ratingSelectors) {
-                    const el = document.querySelector(selector);
-                    if (el) {
-                        const text = el.textContent;
-                        const match = text.match(/([\\d.]+)/);
-                        if (match) {
-                            const val = parseFloat(match[1]);
-                            details.rating = val > 5 ? val / 2 : val;
-                            break;
-                        }
+                    // 2. DOM Fallbacks for basic info
+                    if (!d.name) d.name = document.querySelector('[data-testid="property-name"], h2.hp__hotel-name')?.innerText?.trim() || '';
+                    if (!d.address) d.address = document.querySelector('.hp_address_subtitle, [data-testid="address_badge"]')?.innerText?.trim() || '';
+                    if (!d.description) {
+                        const descEl = document.querySelector('#property_description_content, [data-testid="property-description"]');
+                        d.description = descEl ? descEl.innerText.trim() : '';
                     }
-                }
-                
-                // Extract address
-                const addressSelectors = [
-                    '[data-testid="address"]',
-                    '.hp_address_subtitle',
-                    '[data-node_tt_id="location_score_tooltip"]',
-                    '.pp-header__address',
-                    '.address'
-                ];
-                
-                for (const selector of addressSelectors) {
-                    const el = document.querySelector(selector);
-                    if (el) {
-                        details.address = el.textContent.trim();
-                        break;
-                    }
-                }
-                
-                // Extract description
-                const descSelectors = [
-                    '[data-testid="property-description"]',
-                    '#property_description_content',
-                    '.hp-description',
-                    '.property_description_content'
-                ];
-                
-                for (const selector of descSelectors) {
-                    const el = document.querySelector(selector);
-                    if (el) {
-                        details.description = el.textContent.trim();
-                        break;
-                    }
-                }
-                
-                // Extract amenities - ONLY "Most popular facilities"
-                const popularWrapper = document.querySelector('[data-testid="property-most-popular-facilities-wrapper"], .hp_desc_important_facilities, .hp-most-popular-facilities');
-                if (popularWrapper) {
-                    const items = popularWrapper.querySelectorAll('span, li, [data-testid="facility-item"]');
-                    const seen = new Set();
-                    items.forEach(el => {
-                        const name = el.textContent.trim();
-                        if (name && 
-                            name.length > 0 && 
-                            name.length < 60 && 
-                            !name.includes('Most popular') && 
-                            !name.includes('amenities') && 
-                            !name.includes('facilities') &&
-                            !seen.has(name)) {
-                            details.amenities.push({ category: 'Popular', name });
-                            seen.add(name);
+
+                    // 3. Amenities (Aligned with HotelAmenity model)
+                    const seenAms = new Set();
+                    document.querySelectorAll('.hp_desc_important_facilities div, [data-testid="property-most-popular-facilities-wrapper"] span, .important_facility').forEach(el => {
+                        const text = el.innerText.trim();
+                        if (text && !seenAms.has(text) && seenAms.size < 15) {
+                            seenAms.add(text);
+                            d.amenities.push({ category: 'General', name: text });
                         }
                     });
-                }
-                
-                // Fallback for other structures
-                if (details.amenities.length === 0) {
-                    const altSelectors = ['.important_facility', '.hp_facility_list li', '.property-highlights li'];
-                    altSelectors.forEach(s => {
-                        if (details.amenities.length > 0) return;
-                        document.querySelectorAll(s).forEach(el => {
-                            const name = el.textContent.trim();
-                            if (name) details.amenities.push({ category: 'Popular', name });
-                        });
-                    });
-                }
-                
-                // 5. Reviews extraction (DOM)
-                if (details.reviews.length === 0) {
+
+                    // 4. Reviews extraction (Aligned with HotelReview model)
                     const reviewSelectors = [
                         '[data-testid="review-card"]',
                         '.review_item',
                         '.c-review-block',
-                        '.featured_review',
-                        '.review_list_new_item_block',
-                        '[data-testid="review-author-name"]'
+                        '[data-testid="featuredreview"]'
                     ];
                     
-                    let reviewCards = [];
-                    for (const s of reviewSelectors) {
-                        const found = document.querySelectorAll(s);
-                        console.log(`Selector ${s} found ${found.length} elements`);
-                        if (found.length > 0) { 
-                            if (s === '[data-testid="review-author-name"]') {
-                                reviewCards = Array.from(found).map(el => el.closest('div, li') || el);
-                            } else {
-                                reviewCards = Array.from(found); 
-                            }
-                            break; 
-                        }
-                    }
-                    
-                    reviewCards.forEach((card, idx) => {
-                        if (idx >= 10) return;
-                        
-                        const cardText = card.innerText || '';
-                        
-                        // Author - try multiple common selectors
-                        let reviewer = 'Anonymous';
-                        const authorSelectors = [
-                            '[data-testid="review-author-name"]',
-                            '.bui-avatar-block__title',
-                            '.c-review-block__title',
-                            '.review_item_reviewer_name',
-                            '.bui-avatar-block__text',
-                            '.a3332d4613', 
-                            '.be659bb4c2 [class*="title"]',
-                            '.be659bb4c2 div:first-child',
-                            '.review-card__author',
-                            '.review-author-name'
-                        ];
-                        for (const s of authorSelectors) {
-                            const el = card.querySelector(s);
-                            if (el && el.textContent.trim()) {
-                                reviewer = el.textContent.trim();
-                                break;
-                            }
-                        }
-                        // Fallback: If still anonymous, take first line if it looks like a name (short)
-                        if (reviewer === 'Anonymous' && cardText) {
-                            const firstLine = cardText.split('\\n')[0].trim();
-                            if (firstLine && firstLine.length > 0 && firstLine.length < 40) reviewer = firstLine;
-                        }
-                        
-                        // Rating - look for badges or text patterns
-                        let rating = 0;
-                        const scoreSelectors = [
-                            '[data-testid="review-score-badge"]',
-                            '.bui-review-score__badge',
-                            '.review-score-badge',
-                            '.b5cd09854e',
-                            '.abf0933828',
-                            '.a7da303032',
-                            '.d22a77730d',
-                            '.be06d33c8b',
-                            '[aria-label*="Scored"]'
-                        ];
-                        for (const s of scoreSelectors) {
-                            const scoreEl = card.querySelector(s);
-                            if (scoreEl) {
-                                const scoreTxt = scoreEl.getAttribute('aria-label') || scoreEl.textContent;
-                                const m = scoreTxt.match(/([\\d.]+)/);
-                                if (m) {
-                                    rating = parseFloat(m[1]);
-                                    break;
+                    const seenReviews = new Set();
+                    for (const sel of reviewSelectors) {
+                        document.querySelectorAll(sel).forEach(el => {
+                            const text = el.querySelector('[data-testid="review-text"], .review_item_main_content, .c-review__body, [data-testid="featuredreview-text"]')?.innerText?.trim();
+                            if (text && !seenReviews.has(text) && seenReviews.size < 5) {
+                                seenReviews.add(text);
+                                // Enhanced Author Extraction
+                                const authorSelectors = [
+                                    '.review_item_reviewer h4',
+                                    '[data-testid="review-author-name"]',
+                                    '.bui-avatar-block__title',
+                                    '[data-testid="featuredreview-avatar"]',
+                                    '.review-card__header__name'
+                                ];
+                                let author = 'Guest';
+                                for (const aSel of authorSelectors) {
+                                    const aEl = el.querySelector(aSel);
+                                    if (aEl && aEl.innerText.trim()) {
+                                        author = aEl.innerText.trim().split('\\n')[0]; // Take first line (name)
+                                        break;
+                                    }
                                 }
-                            }
-                        }
-                        // Fallback: search for X/10 or single number at start/end of a line
-                        if (rating === 0) {
-                            const m1 = cardText.match(/(\d+\.?\d*)\/10/);
-                            if (m1) rating = parseFloat(m1[1]);
-                            else {
-                                const m2 = cardText.match(/(?:^|\\n)\s*(\d+\.?\d*)\s*(?:\\n|$)/);
-                                if (m2) rating = parseFloat(m2[1]);
-                            }
-                        }
-                        
-                        // Comment
-                        const title = card.querySelector('[data-testid="review-title"], .review_item_header_content, .c-review-block__title')?.textContent.trim() || '';
-                        const pos = card.querySelector('[data-testid="review-positive-text"], .c-review__body--translated, .c-review__body')?.textContent.trim() || '';
-                        const neg = card.querySelector('[data-testid="review-negative-text"]')?.textContent.trim() || '';
-                        
-                        let comment = [title, pos, neg].filter(Boolean).join('. ').trim();
-                        if (!comment && cardText) {
-                            comment = cardText.replace(/\\n/g, ' ').substring(0, 300).trim();
-                        }
-                        
-                        const dateEl = card.querySelector('[data-testid="review-date"], .c-review-block__date, .review_item_date');
-                        const date = dateEl ? dateEl.textContent.trim() : '';
-                        
-                        if (comment || reviewer !== 'Anonymous') {
-                            details.reviews.push({ 
-                                reviewer_name: reviewer, 
-                                rating: rating > 10 ? rating / 10 : rating, 
-                                comment, 
-                                date 
-                            });
-                        }
-                    });
-                }
+                                
+                                // Enhanced Score Extraction
+                                let scoreEl = el.querySelector('[data-testid="review-score-badge"], [data-testid="review-scoreBadge"], .bui-review-score__badge, .review-score-badge, .a3b87295b3, .ebf0170a44, .d1921f0084');
+                                let score = 0;
+                                if (scoreEl) {
+                                    let scoreText = scoreEl.innerText || scoreEl.getAttribute('aria-label') || '0';
+                                    score = parseFloat(scoreText.match(/[\\d.]+/)?.[0] || '0');
+                                } else {
+                                    // Fallback to searching any div/span within the card that has a numeric class or content
+                                    const scoreCandidates = Array.from(el.querySelectorAll('div, span')).filter(e => /^\\d+(\\.\\d+)?$/.test(e.innerText.trim()));
+                                    if (scoreCandidates.length > 0) {
+                                        score = parseFloat(scoreCandidates[0].innerText);
+                                    }
+                                }
+                                
+                                // Final fallback for snippet reviews (featured) which often don't have individual scores visible
+                                if (score === 0 && d.rating > 0) score = d.rating;
+                                
+                                d.reviews.push({ reviewer_name: author, comment: text, rating: score });
 
-                // 6. Photos
-                const photoSelectors = [
-                    '[data-testid="gallery-image"] img',
-                    '.hp-gallery-image img',
-                    '.hotel_main_gallery img',
-                    '[data-testid="hotel-gallery"] img',
-                    '.bh-photo-grid-item img',
-                    '.bh-photo-grid-thumb img',
-                    '.gallery-side-reviews-wrapper img'
-                ];
-                for (const s of photoSelectors) {
-                    const imgs = document.querySelectorAll(s);
-                    console.log(`Selector ${s} found ${imgs.length} images`);
-                    if (imgs.length > 0) {
-                        imgs.forEach((img, i) => {
-                            if (i < 20) {
-                                const url = img.src || img.getAttribute('src') || img.getAttribute('data-lazy') || img.getAttribute('data-src');
-                                if (url && !url.includes('placeholder')) details.photos.push({ url, caption: img.alt || '' });
                             }
                         });
-                        break;
+                        if (d.reviews.length >= 3) break;
                     }
-                }
-                
-                // 7. Room Types
-                const roomSelectors = ['[data-testid="room-card"]', '.hprt-table tr', '.hp-room-details'];
-                for (const s of roomSelectors) {
-                    const cards = document.querySelectorAll(s);
-                    if (cards.length > 0) {
-                        cards.forEach(card => {
-                            const nameEl = card.querySelector('.hprt-roomtype-icon-link, [data-testid="room-name"], .room-name');
-                            const priceEl = card.querySelector('.bui-price-display__value, .prco-valign-middle-helper, [data-testid="price-and-discounted-price"]');
-                            if (nameEl && priceEl) {
-                                details.room_types.push({
-                                    name: nameEl.textContent.trim(),
-                                    price: parseFloat(priceEl.textContent.replace(/[^\\d.]/g, '')),
-                                    currency: 'INR'
-                                });
+
+                    // 5. Photos extraction (Aligned with HotelPhoto model)
+                    const photoUrls = new Set();
+                    const photoSelectors = [
+                        '.hp-gallery-imgs img',
+                        '[data-testid="gallery-image"] img',
+                        '.bh-photo-grid-item img',
+                        '.hotel_main_gallery img',
+                        '.hp-gallery-image img'
+                    ];
+                    for (const sel of photoSelectors) {
+                        document.querySelectorAll(sel).forEach(img => {
+                            let src = img.getAttribute('data-lazy') || img.src;
+                            if (src && src.startsWith('http') && !photoUrls.has(src) && photoUrls.size < 20) {
+                                photoUrls.add(src);
+                                d.photos.push({ url: src, caption: img.alt || '' });
                             }
                         });
-                        break;
                     }
-                }
-                
-                
-                // Fallback for reviews if DOM was empty
-                if (details.reviews.length === 0 && details._jsonld_reviews && details._jsonld_reviews.length > 0) {
-                    details._jsonld_reviews.forEach(rev => {
-                        if (details.reviews.length < 10) {
-                            details.reviews.push({
-                                reviewer_name: rev.author?.name || rev.author || 'Anonymous',
-                                rating: (rev.reviewRating?.ratingValue || 0) / 2,
-                                comment: rev.reviewBody || rev.description || '',
-                                date: rev.datePublished || rev.dateCreated || ''
-                            });
+
+                    // Script fallback for photos
+                    if (d.photos.length < 5) {
+                        const html = document.documentElement.innerHTML;
+                        const photoMatches = html.matchAll(/large_url:\\s*'(https:\/\/cf\.bstatic\.com\/[^']+)'/g);
+                        for (const m of photoMatches) {
+                            if (photoUrls.size >= 20) break;
+                            if (!photoUrls.has(m[1])) {
+                                photoUrls.add(m[1]);
+                                d.photos.push({ url: m[1], caption: '' });
+                            }
                         }
-                    });
-                }
+                    }
+
+                    // 6. Room Types extraction (Aligned with RoomType model)
+                    const roomNames = new Set();
+                    const roomSelectors = [
+                        '.rt-room-info',
+                        '[data-testid="room-title"]',
+                        '.hprt-roomtype-link',
+                        '[data-room-id] .hprt-roomtype-icon-link',
+                        '.hp-rt-room-name',
+                        '[data-testid="rt-room-card"] .hprt-roomtype-link',
+                        '.hprt-table-cell-roomtype .hprt-roomtype-icon-link',
+                        '.room-info a'
+                    ];
+                    for (const rs of roomSelectors) {
+                        document.querySelectorAll(rs).forEach(el => {
+                            const name = el.innerText.trim().split('\\n')[0];
+                            if (name && name.length > 3 && !roomNames.has(name) && roomNames.size < 10) {
+                                roomNames.add(name);
+                                d.room_types.push({ name: name, price: 0.0, currency: 'INR' });
+                            }
+                        });
+                    }
+
+                    // Secondary fallback for room types from window data if extraction failed
+                    if (d.room_types.length === 0) {
+                        try {
+                            const b_env = window.booking?.env || {};
+                            const rooms = b_env.b_room_group || b_env.hprt_room_data || [];
+                            rooms.forEach(r => {
+                                if (r.name && !roomNames.has(r.name)) {
+                                    roomNames.add(r.name);
+                                    d.room_types.push({ name: r.name, price: 0.0, currency: 'INR' });
+                                }
+                            });
+                        } catch(e) {}
+                    }
+
+                    
+                    return d;
+                }''')
                 
-                return details;
-            }''')
-            
-            browser.close()
-            
-            if hotel_data and hotel_data.get('name'):
-                # Generate hotel ID from name in Python
-                name = hotel_data['name']
-                hotel_id = 0
-                for char in name:
-                    hotel_id = ((hotel_id << 5) - hotel_id) + ord(char)
-                    hotel_id &= 0xFFFFFFFF # Keep it as 32-bit int
+                # Post-process in python
+                if hotel_data and hotel_data.get('name'):
+                    name = hotel_data['name']
+                    # Use absolute value of hash to avoid negative IDs
+                    hotel_id = abs(hash(name)) % 100000
+                    hotel_data['hotel_id'] = hotel_id
+                    
+                    # Fix rating if exceeds 5 (Booking uses 10-point scale sometimes)
+                    if hotel_data.get('rating') and hotel_data['rating'] > 5:
+                        hotel_data['rating'] = round(hotel_data['rating'] / 2, 1)
+                    
+                    logger.info(f"✅ Successfully fetched details for: {name}")
+                    return hotel_data
                 
-                hotel_data['hotel_id'] = abs(hotel_id) % 100000
-                logger.info(f"✅ Successfully fetched details for: {hotel_data['name']}")
-                return hotel_data
-            else:
-                logger.warning("Could not extract hotel details - mandatory field 'name' not found")
                 return None
-                
+            finally:
+                browser.close()
     except Exception as e:
-        logger.error(f"Error fetching hotel details: {e}")
+        logger.error(f"Detail error for {hotel_url}: {e}")
         return None
 

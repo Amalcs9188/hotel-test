@@ -1,0 +1,847 @@
+[
+  {
+    "selector": "[data-testid=\"featuredreview\"]",
+    "html": "<div data-testid=\"featuredreview\" style=\"--bui_stack_spaced_gap--s:2\" class=\"f6e3a11b0d ae5dbab14d e95943ce9b\"><div data-testid=\"featuredreview-avatar\"><div style=\"--bui_stack_spaced_gap--s:2\" class=\"f6e3a11b0d a19a26a18c a81870d302 ac30880487 e95943ce9b\"><div aria-hidden=\"false\" style=\"--bui_box_spaced_padding--s:0\" class=\"c3bdfd4ac2 b96c49a28c c256f1a28a a18a170653 e865001853 dc9db40f5a ba98511f54\"><picture class=\"b7a691c583 f5c8371996\" style=\"--bui_image_width--s:100%;--bui_image_height--s:100%\"><img class=\"f6c12c77eb c0e44985a8 c09abd8a52 ca3dad4476\" src=\"https://lh6.googleusercontent.com/-f3RfvGOa53U/AAAAAAAAAAI/AAAAAAAADl8/Haq95_PmEIE/s96-c/photo.jpg\" alt=\"\" role=\"presentation\" loading=\"lazy\"></picture></div><div class=\"aa225776f2 ca9d921c46\"><div class=\"b08850ce41 f546354b44\">Raimundo</div><div class=\"fff1944c52 fb14de7f14\"><img alt=\"Brazil\" src=\"https://t-cf.bstatic.com/design-assets/assets/v3.176.0/images-flags/Br.png\" class=\"b8d1620349\"><span class=\"d838fb5f41 aea5eccb71\"> <!-- -->Brazil</span></div></div></div></div><div data-testid=\"featuredreview-text\"><div><div class=\"b99b6ef58f d14152e7c3\"><span>\u201c</span><span>The hotel is full of history, wonderfully located, you are tread are kings and queens!</span><span>\u201d</span></div></div></div><div data-testid=\"featuredreview-more\"><button aria-label=\"Read more of Raimundo's review\" type=\"button\" class=\"de576f5064 bef8628e61 e0d8514d4d\"><span>Read more</span></button></div></div>",
+    "text": "Raimundo\nBrazil\n\u201cThe hotel is full of history, wonderfully located, you are tread are kings and queens!\u201d\nRead more",
+    "author_candidates": [
+      {
+        "tag": "DIV",
+        "text": "Raimundo\nBrazil",
+        "testid": "featuredreview-avatar"
+      },
+      {
+        "tag": "DIV",
+        "text": "Raimundo\nBrazil",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "Raimundo\nBrazil",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "Raimundo",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "Brazil",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "Brazil",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "\u201cThe hotel is full of history, wonderfully located, you are tread are kings and queens!\u201d",
+        "testid": "featuredreview-text"
+      },
+      {
+        "tag": "DIV",
+        "text": "\u201cThe hotel is full of history, wonderfully located, you are tread are kings and queens!\u201d",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "\u201cThe hotel is full of history, wonderfully located, you are tread are kings and queens!\u201d",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "\u201c",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "The hotel is full of history, wonderfully located, you are tread are kings and queens!",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "\u201d",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "Read more",
+        "testid": "featuredreview-more"
+      },
+      {
+        "tag": "SPAN",
+        "text": "Read more",
+        "testid": null
+      }
+    ],
+    "score_candidates": []
+  },
+  {
+    "selector": "[data-testid=\"featuredreview\"]",
+    "html": "<div data-testid=\"featuredreview\" style=\"--bui_stack_spaced_gap--s:2\" class=\"f6e3a11b0d ae5dbab14d e95943ce9b\"><div data-testid=\"featuredreview-avatar\"><div style=\"--bui_stack_spaced_gap--s:2\" class=\"f6e3a11b0d a19a26a18c a81870d302 ac30880487 e95943ce9b\"><div aria-hidden=\"false\" style=\"--bui_box_spaced_padding--s:0\" class=\"c3bdfd4ac2 b96c49a28c c256f1a28a a18a170653 e865001853 dc9db40f5a ba98511f54\"><picture class=\"b7a691c583 f5c8371996\" style=\"--bui_image_width--s:100%;--bui_image_height--s:100%\"><img class=\"f6c12c77eb c0e44985a8 c09abd8a52 ca3dad4476\" src=\"https://graph.facebook.com/v2.9/969370143236868/picture?type=square&amp;height=64&amp;width=64\" alt=\"\" role=\"presentation\" loading=\"lazy\"></picture></div><div class=\"aa225776f2 ca9d921c46\"><div class=\"b08850ce41 f546354b44\">Elsie</div><div class=\"fff1944c52 fb14de7f14\"><img alt=\"United States\" src=\"https://t-cf.bstatic.com/design-assets/assets/v3.176.0/images-flags/Us.png\" class=\"b8d1620349\"><span class=\"d838fb5f41 aea5eccb71\"> <!-- -->United States</span></div></div></div></div><div data-testid=\"featuredreview-text\"><div><div class=\"b99b6ef58f d14152e7c3\"><span>\u201c</span><span>Food wxcellent. Taj Palace is one of Mumbai\u2019s landmarks. It is part of all tours. No need for city tour if u are staying at Taj. It IS the city (at least from a tourist point of view). Walking outside is an experience in itself. Perfectly safe but...</span><span>\u201d</span></div></div></div><div data-testid=\"featuredreview-more\"><button aria-label=\"Read more of Elsie's review\" type=\"button\" class=\"de576f5064 bef8628e61 e0d8514d4d\"><span>Read more</span></button></div></div>",
+    "text": "Elsie\nUnited States\n\u201cFood wxcellent. Taj Palace is one of Mumbai\u2019s landmarks. It is part of all tours. No need for city tour if u are staying at Taj. It IS the city (at least from a tourist point of view). Walking outside is an experience in itself. Perfectly safe but...\u201d\nRead more",
+    "author_candidates": [
+      {
+        "tag": "DIV",
+        "text": "Elsie\nUnited States",
+        "testid": "featuredreview-avatar"
+      },
+      {
+        "tag": "DIV",
+        "text": "Elsie\nUnited States",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "Elsie\nUnited States",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "Elsie",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "United States",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "United States",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "\u201cFood wxcellent. Taj Palace is one of Mumbai\u2019s landmarks. It is part of all tours. No need for city tour if u are staying at Taj. It IS the city (at least from a tourist point of view). Walking outside is an experience in itself. Perfectly safe but...\u201d",
+        "testid": "featuredreview-text"
+      },
+      {
+        "tag": "DIV",
+        "text": "\u201cFood wxcellent. Taj Palace is one of Mumbai\u2019s landmarks. It is part of all tours. No need for city tour if u are staying at Taj. It IS the city (at least from a tourist point of view). Walking outside is an experience in itself. Perfectly safe but...\u201d",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "\u201cFood wxcellent. Taj Palace is one of Mumbai\u2019s landmarks. It is part of all tours. No need for city tour if u are staying at Taj. It IS the city (at least from a tourist point of view). Walking outside is an experience in itself. Perfectly safe but...\u201d",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "\u201c",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "Food wxcellent. Taj Palace is one of Mumbai\u2019s landmarks. It is part of all tours. No need for city tour if u are staying at Taj. It IS the city (at least from a tourist point of view). Walking outside is an experience in itself. Perfectly safe but...",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "\u201d",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "Read more",
+        "testid": "featuredreview-more"
+      },
+      {
+        "tag": "SPAN",
+        "text": "Read more",
+        "testid": null
+      }
+    ],
+    "score_candidates": []
+  },
+  {
+    "selector": "[data-testid=\"featuredreview\"]",
+    "html": "<div data-testid=\"featuredreview\" style=\"--bui_stack_spaced_gap--s:2\" class=\"f6e3a11b0d ae5dbab14d e95943ce9b\"><div data-testid=\"featuredreview-avatar\"><div style=\"--bui_stack_spaced_gap--s:2\" class=\"f6e3a11b0d a19a26a18c a81870d302 ac30880487 e95943ce9b\"><div aria-hidden=\"false\" style=\"--bui_box_spaced_padding--s:0\" class=\"c3bdfd4ac2 b96c49a28c c256f1a28a a18a170653 e865001853 dc9db40f5a ba98511f54\"><picture class=\"b7a691c583 f5c8371996\" style=\"--bui_image_width--s:100%;--bui_image_height--s:100%\"><img class=\"f6c12c77eb c0e44985a8 c09abd8a52 ca3dad4476\" src=\"https://lh6.googleusercontent.com/-GnaB92MqygA/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucknV_xrnS38gYGs2QFxJi0GZv6TWA/s96-c/photo.jpg\" alt=\"\" role=\"presentation\" loading=\"lazy\"></picture></div><div class=\"aa225776f2 ca9d921c46\"><div class=\"b08850ce41 f546354b44\">Angel</div><div class=\"fff1944c52 fb14de7f14\"><img alt=\"Bulgaria\" src=\"https://t-cf.bstatic.com/design-assets/assets/v3.176.0/images-flags/Bg.png\" class=\"b8d1620349\"><span class=\"d838fb5f41 aea5eccb71\"> <!-- -->Bulgaria</span></div></div></div></div><div data-testid=\"featuredreview-text\"><div><div class=\"b99b6ef58f d14152e7c3\"><span>\u201c</span><span>Very classical architecture, lots of art and historical heritage in one place</span><span>\u201d</span></div></div></div><div data-testid=\"featuredreview-more\"><button aria-label=\"Read more of Angel's review\" type=\"button\" class=\"de576f5064 bef8628e61 e0d8514d4d\"><span>Read more</span></button></div></div>",
+    "text": "Angel\nBulgaria\n\u201cVery classical architecture, lots of art and historical heritage in one place\u201d\nRead more",
+    "author_candidates": [
+      {
+        "tag": "DIV",
+        "text": "Angel\nBulgaria",
+        "testid": "featuredreview-avatar"
+      },
+      {
+        "tag": "DIV",
+        "text": "Angel\nBulgaria",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "Angel\nBulgaria",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "Angel",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "Bulgaria",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "Bulgaria",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "\u201cVery classical architecture, lots of art and historical heritage in one place\u201d",
+        "testid": "featuredreview-text"
+      },
+      {
+        "tag": "DIV",
+        "text": "\u201cVery classical architecture, lots of art and historical heritage in one place\u201d",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "\u201cVery classical architecture, lots of art and historical heritage in one place\u201d",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "\u201c",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "Very classical architecture, lots of art and historical heritage in one place",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "\u201d",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "Read more",
+        "testid": "featuredreview-more"
+      },
+      {
+        "tag": "SPAN",
+        "text": "Read more",
+        "testid": null
+      }
+    ],
+    "score_candidates": []
+  },
+  {
+    "selector": "[data-testid=\"featuredreview\"]",
+    "html": "<div data-testid=\"featuredreview\" style=\"--bui_stack_spaced_gap--s:2\" class=\"f6e3a11b0d ae5dbab14d e95943ce9b\"><div data-testid=\"featuredreview-avatar\"><div style=\"--bui_stack_spaced_gap--s:2\" class=\"f6e3a11b0d a19a26a18c a81870d302 ac30880487 e95943ce9b\"><div aria-hidden=\"false\" style=\"--bui_box_spaced_padding--s:0\" class=\"c3bdfd4ac2 b96c49a28c c256f1a28a a18a170653 e865001853 dc9db40f5a ba98511f54\"><picture class=\"b7a691c583 f5c8371996\" style=\"--bui_image_width--s:100%;--bui_image_height--s:100%\"><img class=\"f6c12c77eb c0e44985a8 c09abd8a52 ca3dad4476\" src=\"https://xx.bstatic.com/xdata/images/xphoto/square64/15631507.jpg?k=89fa9630ab75a7e5ad8045cfc172a9748ea5472d3a5f94df183068c92751df6d&amp;o=\" alt=\"\" role=\"presentation\" loading=\"lazy\"></picture></div><div class=\"aa225776f2 ca9d921c46\"><div class=\"b08850ce41 f546354b44\">King</div><div class=\"fff1944c52 fb14de7f14\"><img alt=\"New Zealand\" src=\"https://t-cf.bstatic.com/design-assets/assets/v3.176.0/images-flags/Nz.png\" class=\"b8d1620349\"><span class=\"d838fb5f41 aea5eccb71\"> <!-- -->New Zealand</span></div></div></div></div><div data-testid=\"featuredreview-text\"><div><div class=\"b99b6ef58f d14152e7c3\"><span>\u201c</span><span>The property itself is very nice and lives up to the Taj brand in terms of ambience and comfort.</span><span>\u201d</span></div></div></div><div data-testid=\"featuredreview-more\"><button tabindex=\"-1\" aria-label=\"Read more of King's review\" type=\"button\" class=\"de576f5064 bef8628e61 e0d8514d4d\"><span>Read more</span></button></div></div>",
+    "text": "King\nNew Zealand\n\u201cThe property itself is very nice and lives up to the Taj brand in terms of ambience and comfort.\u201d\nRead more",
+    "author_candidates": [
+      {
+        "tag": "DIV",
+        "text": "King\nNew Zealand",
+        "testid": "featuredreview-avatar"
+      },
+      {
+        "tag": "DIV",
+        "text": "King\nNew Zealand",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "King\nNew Zealand",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "King",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "New Zealand",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "New Zealand",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "\u201cThe property itself is very nice and lives up to the Taj brand in terms of ambience and comfort.\u201d",
+        "testid": "featuredreview-text"
+      },
+      {
+        "tag": "DIV",
+        "text": "\u201cThe property itself is very nice and lives up to the Taj brand in terms of ambience and comfort.\u201d",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "\u201cThe property itself is very nice and lives up to the Taj brand in terms of ambience and comfort.\u201d",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "\u201c",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "The property itself is very nice and lives up to the Taj brand in terms of ambience and comfort.",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "\u201d",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "Read more",
+        "testid": "featuredreview-more"
+      },
+      {
+        "tag": "SPAN",
+        "text": "Read more",
+        "testid": null
+      }
+    ],
+    "score_candidates": []
+  },
+  {
+    "selector": "[data-testid=\"featuredreview\"]",
+    "html": "<div data-testid=\"featuredreview\" style=\"--bui_stack_spaced_gap--s:2\" class=\"f6e3a11b0d ae5dbab14d e95943ce9b\"><div data-testid=\"featuredreview-avatar\"><div style=\"--bui_stack_spaced_gap--s:2\" class=\"f6e3a11b0d a19a26a18c a81870d302 ac30880487 e95943ce9b\"><div aria-hidden=\"true\" style=\"--bui_box_spaced_padding--s:0\" class=\"c3bdfd4ac2 b96c49a28c c256f1a28a a18a170653 e865001853 dc9db40f5a ba98511f54\"><span>S</span></div><div class=\"aa225776f2 ca9d921c46\"><div class=\"b08850ce41 f546354b44\">Sultan</div><div class=\"fff1944c52 fb14de7f14\"><img alt=\"Kuwait\" src=\"https://t-cf.bstatic.com/design-assets/assets/v3.176.0/images-flags/Kw.png\" class=\"b8d1620349\"><span class=\"d838fb5f41 aea5eccb71\"> <!-- -->Kuwait</span></div></div></div></div><div data-testid=\"featuredreview-text\"><div><div class=\"b99b6ef58f d14152e7c3\"><span>\u201c</span><span>Aman is very friendly and helpful he made sure to explain everything in this hotel you can see how proud he is in his workplace \nRest of the staff are also friendly\nOne of the best Indian restaurant I tried in a hotel\nThe swimming pool area is great</span><span>\u201d</span></div></div></div><div data-testid=\"featuredreview-more\"><button tabindex=\"-1\" aria-label=\"Read more of Sultan's review\" type=\"button\" class=\"de576f5064 bef8628e61 e0d8514d4d\"><span>Read more</span></button></div></div>",
+    "text": "S\nSultan\nKuwait\n\u201cAman is very friendly and helpful he made sure to explain everything in this hotel you can see how proud he is in his workplace\nRest of the staff are also friendly\nOne of the best Indian restaurant I tried in a hotel\nThe swimming pool area is great\u201d\nRead more",
+    "author_candidates": [
+      {
+        "tag": "DIV",
+        "text": "S\nSultan\nKuwait",
+        "testid": "featuredreview-avatar"
+      },
+      {
+        "tag": "DIV",
+        "text": "S\nSultan\nKuwait",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "S",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "S",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "Sultan\nKuwait",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "Sultan",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "Kuwait",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "Kuwait",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "\u201cAman is very friendly and helpful he made sure to explain everything in this hotel you can see how proud he is in his workplace\nRest of the staff are also friendly\nOne of the best Indian restaurant I tried in a hotel\nThe swimming pool area is great\u201d",
+        "testid": "featuredreview-text"
+      },
+      {
+        "tag": "DIV",
+        "text": "\u201cAman is very friendly and helpful he made sure to explain everything in this hotel you can see how proud he is in his workplace\nRest of the staff are also friendly\nOne of the best Indian restaurant I tried in a hotel\nThe swimming pool area is great\u201d",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "\u201cAman is very friendly and helpful he made sure to explain everything in this hotel you can see how proud he is in his workplace\nRest of the staff are also friendly\nOne of the best Indian restaurant I tried in a hotel\nThe swimming pool area is great\u201d",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "\u201c",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "Aman is very friendly and helpful he made sure to explain everything in this hotel you can see how proud he is in his workplace\nRest of the staff are also friendly\nOne of the best Indian restaurant I tried in a hotel\nThe swimming pool area is great",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "\u201d",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "Read more",
+        "testid": "featuredreview-more"
+      },
+      {
+        "tag": "SPAN",
+        "text": "Read more",
+        "testid": null
+      }
+    ],
+    "score_candidates": []
+  },
+  {
+    "selector": "[data-testid=\"featuredreview\"]",
+    "html": "<div data-testid=\"featuredreview\" style=\"--bui_stack_spaced_gap--s:2\" class=\"f6e3a11b0d ae5dbab14d e95943ce9b\"><div data-testid=\"featuredreview-avatar\"><div style=\"--bui_stack_spaced_gap--s:2\" class=\"f6e3a11b0d a19a26a18c a81870d302 ac30880487 e95943ce9b\"><div aria-hidden=\"true\" style=\"--bui_box_spaced_padding--s:0\" class=\"c3bdfd4ac2 b96c49a28c c256f1a28a a18a170653 e865001853 dc9db40f5a ba98511f54\"><span>N</span></div><div class=\"aa225776f2 ca9d921c46\"><div class=\"b08850ce41 f546354b44\">Nilanjana</div><div class=\"fff1944c52 fb14de7f14\"><img alt=\"United States\" src=\"https://t-cf.bstatic.com/design-assets/assets/v3.176.0/images-flags/Us.png\" class=\"b8d1620349\"><span class=\"d838fb5f41 aea5eccb71\"> <!-- -->United States</span></div></div></div></div><div data-testid=\"featuredreview-text\"><div><div class=\"b99b6ef58f d14152e7c3\"><span>\u201c</span><span>Breakfast at Seaview room was excellent. Palace room has some oldie smell so we asked the staff to clear it up.</span><span>\u201d</span></div></div></div><div data-testid=\"featuredreview-more\"><button tabindex=\"-1\" aria-label=\"Read more of Nilanjana's review\" type=\"button\" class=\"de576f5064 bef8628e61 e0d8514d4d\"><span>Read more</span></button></div></div>",
+    "text": "N\nNilanjana\nUnited States\n\u201cBreakfast at Seaview room was excellent. Palace room has some oldie smell so we asked the staff to clear it up.\u201d\nRead more",
+    "author_candidates": [
+      {
+        "tag": "DIV",
+        "text": "N\nNilanjana\nUnited States",
+        "testid": "featuredreview-avatar"
+      },
+      {
+        "tag": "DIV",
+        "text": "N\nNilanjana\nUnited States",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "N",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "N",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "Nilanjana\nUnited States",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "Nilanjana",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "United States",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "United States",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "\u201cBreakfast at Seaview room was excellent. Palace room has some oldie smell so we asked the staff to clear it up.\u201d",
+        "testid": "featuredreview-text"
+      },
+      {
+        "tag": "DIV",
+        "text": "\u201cBreakfast at Seaview room was excellent. Palace room has some oldie smell so we asked the staff to clear it up.\u201d",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "\u201cBreakfast at Seaview room was excellent. Palace room has some oldie smell so we asked the staff to clear it up.\u201d",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "\u201c",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "Breakfast at Seaview room was excellent. Palace room has some oldie smell so we asked the staff to clear it up.",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "\u201d",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "Read more",
+        "testid": "featuredreview-more"
+      },
+      {
+        "tag": "SPAN",
+        "text": "Read more",
+        "testid": null
+      }
+    ],
+    "score_candidates": []
+  },
+  {
+    "selector": "[data-testid=\"featuredreview\"]",
+    "html": "<div data-testid=\"featuredreview\" style=\"--bui_stack_spaced_gap--s:2\" class=\"f6e3a11b0d ae5dbab14d e95943ce9b\"><div data-testid=\"featuredreview-avatar\"><div style=\"--bui_stack_spaced_gap--s:2\" class=\"f6e3a11b0d a19a26a18c a81870d302 ac30880487 e95943ce9b\"><div aria-hidden=\"false\" style=\"--bui_box_spaced_padding--s:0\" class=\"c3bdfd4ac2 b96c49a28c c256f1a28a a18a170653 e865001853 dc9db40f5a ba98511f54\"><picture class=\"b7a691c583 f5c8371996\" style=\"--bui_image_width--s:100%;--bui_image_height--s:100%\"><img class=\"f6c12c77eb c0e44985a8 c09abd8a52 ca3dad4476\" src=\"https://lh3.googleusercontent.com/a-/AOh14GigiT8tjH7pmIt9vB21Ur1UExhicTDHEWpDGI5r=s96-c\" alt=\"\" role=\"presentation\" loading=\"lazy\"></picture></div><div class=\"aa225776f2 ca9d921c46\"><div class=\"b08850ce41 f546354b44\">Ali</div><div class=\"fff1944c52 fb14de7f14\"><img alt=\"United States\" src=\"https://t-cf.bstatic.com/design-assets/assets/v3.176.0/images-flags/Us.png\" class=\"b8d1620349\"><span class=\"d838fb5f41 aea5eccb71\"> <!-- -->United States</span></div></div></div></div><div data-testid=\"featuredreview-text\"><div><div class=\"b99b6ef58f d14152e7c3\"><span>\u201c</span><span>It is an experience to stay at this historic and elegance place. Room was very nice and spacious.</span><span>\u201d</span></div></div></div><div data-testid=\"featuredreview-more\"><button tabindex=\"-1\" aria-label=\"Read more of Ali's review\" type=\"button\" class=\"de576f5064 bef8628e61 e0d8514d4d\"><span>Read more</span></button></div></div>",
+    "text": "Ali\nUnited States\n\u201cIt is an experience to stay at this historic and elegance place. Room was very nice and spacious.\u201d\nRead more",
+    "author_candidates": [
+      {
+        "tag": "DIV",
+        "text": "Ali\nUnited States",
+        "testid": "featuredreview-avatar"
+      },
+      {
+        "tag": "DIV",
+        "text": "Ali\nUnited States",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "Ali\nUnited States",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "Ali",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "United States",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "United States",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "\u201cIt is an experience to stay at this historic and elegance place. Room was very nice and spacious.\u201d",
+        "testid": "featuredreview-text"
+      },
+      {
+        "tag": "DIV",
+        "text": "\u201cIt is an experience to stay at this historic and elegance place. Room was very nice and spacious.\u201d",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "\u201cIt is an experience to stay at this historic and elegance place. Room was very nice and spacious.\u201d",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "\u201c",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "It is an experience to stay at this historic and elegance place. Room was very nice and spacious.",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "\u201d",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "Read more",
+        "testid": "featuredreview-more"
+      },
+      {
+        "tag": "SPAN",
+        "text": "Read more",
+        "testid": null
+      }
+    ],
+    "score_candidates": []
+  },
+  {
+    "selector": "[data-testid=\"featuredreview\"]",
+    "html": "<div data-testid=\"featuredreview\" style=\"--bui_stack_spaced_gap--s:2\" class=\"f6e3a11b0d ae5dbab14d e95943ce9b\"><div data-testid=\"featuredreview-avatar\"><div style=\"--bui_stack_spaced_gap--s:2\" class=\"f6e3a11b0d a19a26a18c a81870d302 ac30880487 e95943ce9b\"><div aria-hidden=\"false\" style=\"--bui_box_spaced_padding--s:0\" class=\"c3bdfd4ac2 b96c49a28c c256f1a28a a18a170653 e865001853 dc9db40f5a ba98511f54\"><picture class=\"b7a691c583 f5c8371996\" style=\"--bui_image_width--s:100%;--bui_image_height--s:100%\"><img class=\"f6c12c77eb c0e44985a8 c09abd8a52 ca3dad4476\" src=\"https://xx.bstatic.com/xdata/images/xphoto/square64/335948260.jpg?k=43845b9f9b834a7a455eae3a9f3b9bc04989e2744284e1d73c65ad5113571154&amp;o=\" alt=\"\" role=\"presentation\" loading=\"lazy\"></picture></div><div class=\"aa225776f2 ca9d921c46\"><div class=\"b08850ce41 f546354b44\">Andrea</div><div class=\"fff1944c52 fb14de7f14\"><img alt=\"United States\" src=\"https://t-cf.bstatic.com/design-assets/assets/v3.176.0/images-flags/Us.png\" class=\"b8d1620349\"><span class=\"d838fb5f41 aea5eccb71\"> <!-- -->United States</span></div></div></div></div><div data-testid=\"featuredreview-text\"><div><div class=\"b99b6ef58f d14152e7c3\"><span>\u201c</span><span>This property is historic and directly across for the Gateway of India.  We stayed in historical section of the hotel.  The staff greeted us upon arrival and were available to answer all of questions.   There are several restaurants, shops and a...</span><span>\u201d</span></div></div></div><div data-testid=\"featuredreview-more\"><button tabindex=\"-1\" aria-label=\"Read more of Andrea's review\" type=\"button\" class=\"de576f5064 bef8628e61 e0d8514d4d\"><span>Read more</span></button></div></div>",
+    "text": "Andrea\nUnited States\n\u201cThis property is historic and directly across for the Gateway of India. We stayed in historical section of the hotel. The staff greeted us upon arrival and were available to answer all of questions. There are several restaurants, shops and a...\u201d\nRead more",
+    "author_candidates": [
+      {
+        "tag": "DIV",
+        "text": "Andrea\nUnited States",
+        "testid": "featuredreview-avatar"
+      },
+      {
+        "tag": "DIV",
+        "text": "Andrea\nUnited States",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "Andrea\nUnited States",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "Andrea",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "United States",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "United States",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "\u201cThis property is historic and directly across for the Gateway of India. We stayed in historical section of the hotel. The staff greeted us upon arrival and were available to answer all of questions. There are several restaurants, shops and a...\u201d",
+        "testid": "featuredreview-text"
+      },
+      {
+        "tag": "DIV",
+        "text": "\u201cThis property is historic and directly across for the Gateway of India. We stayed in historical section of the hotel. The staff greeted us upon arrival and were available to answer all of questions. There are several restaurants, shops and a...\u201d",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "\u201cThis property is historic and directly across for the Gateway of India. We stayed in historical section of the hotel. The staff greeted us upon arrival and were available to answer all of questions. There are several restaurants, shops and a...\u201d",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "\u201c",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "This property is historic and directly across for the Gateway of India. We stayed in historical section of the hotel. The staff greeted us upon arrival and were available to answer all of questions. There are several restaurants, shops and a...",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "\u201d",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "Read more",
+        "testid": "featuredreview-more"
+      },
+      {
+        "tag": "SPAN",
+        "text": "Read more",
+        "testid": null
+      }
+    ],
+    "score_candidates": []
+  },
+  {
+    "selector": "[data-testid=\"featuredreview\"]",
+    "html": "<div data-testid=\"featuredreview\" style=\"--bui_stack_spaced_gap--s:2\" class=\"f6e3a11b0d ae5dbab14d e95943ce9b\"><div data-testid=\"featuredreview-avatar\"><div style=\"--bui_stack_spaced_gap--s:2\" class=\"f6e3a11b0d a19a26a18c a81870d302 ac30880487 e95943ce9b\"><div aria-hidden=\"true\" style=\"--bui_box_spaced_padding--s:0\" class=\"c3bdfd4ac2 b96c49a28c c256f1a28a a18a170653 e865001853 dc9db40f5a ba98511f54\"><span>R</span></div><div class=\"aa225776f2 ca9d921c46\"><div class=\"b08850ce41 f546354b44\">Rasha</div><div class=\"fff1944c52 fb14de7f14\"><img alt=\"Kuwait\" src=\"https://t-cf.bstatic.com/design-assets/assets/v3.176.0/images-flags/Kw.png\" class=\"b8d1620349\"><span class=\"d838fb5f41 aea5eccb71\"> <!-- -->Kuwait</span></div></div></div></div><div data-testid=\"featuredreview-text\"><div><div class=\"b99b6ef58f d14152e7c3\"><span>\u201c</span><span>Cleanness and service is the best .The security of the hotel is a very high. I forgot my gold earnings at the spa and checked out the second day .Didn\u2019t realize until I reached the airport.The found rhem kept for me safe.</span><span>\u201d</span></div></div></div><div data-testid=\"featuredreview-more\"><button tabindex=\"-1\" aria-label=\"Read more of Rasha's review\" type=\"button\" class=\"de576f5064 bef8628e61 e0d8514d4d\"><span>Read more</span></button></div></div>",
+    "text": "R\nRasha\nKuwait\n\u201cCleanness and service is the best .The security of the hotel is a very high. I forgot my gold earnings at the spa and checked out the second day .Didn\u2019t realize until I reached the airport.The found rhem kept for me safe.\u201d\nRead more",
+    "author_candidates": [
+      {
+        "tag": "DIV",
+        "text": "R\nRasha\nKuwait",
+        "testid": "featuredreview-avatar"
+      },
+      {
+        "tag": "DIV",
+        "text": "R\nRasha\nKuwait",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "R",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "R",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "Rasha\nKuwait",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "Rasha",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "Kuwait",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "Kuwait",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "\u201cCleanness and service is the best .The security of the hotel is a very high. I forgot my gold earnings at the spa and checked out the second day .Didn\u2019t realize until I reached the airport.The found rhem kept for me safe.\u201d",
+        "testid": "featuredreview-text"
+      },
+      {
+        "tag": "DIV",
+        "text": "\u201cCleanness and service is the best .The security of the hotel is a very high. I forgot my gold earnings at the spa and checked out the second day .Didn\u2019t realize until I reached the airport.The found rhem kept for me safe.\u201d",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "\u201cCleanness and service is the best .The security of the hotel is a very high. I forgot my gold earnings at the spa and checked out the second day .Didn\u2019t realize until I reached the airport.The found rhem kept for me safe.\u201d",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "\u201c",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "Cleanness and service is the best .The security of the hotel is a very high. I forgot my gold earnings at the spa and checked out the second day .Didn\u2019t realize until I reached the airport.The found rhem kept for me safe.",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "\u201d",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "Read more",
+        "testid": "featuredreview-more"
+      },
+      {
+        "tag": "SPAN",
+        "text": "Read more",
+        "testid": null
+      }
+    ],
+    "score_candidates": []
+  },
+  {
+    "selector": "[data-testid=\"featuredreview\"]",
+    "html": "<div data-testid=\"featuredreview\" style=\"--bui_stack_spaced_gap--s:2\" class=\"f6e3a11b0d ae5dbab14d e95943ce9b\"><div data-testid=\"featuredreview-avatar\"><div style=\"--bui_stack_spaced_gap--s:2\" class=\"f6e3a11b0d a19a26a18c a81870d302 ac30880487 e95943ce9b\"><div aria-hidden=\"false\" style=\"--bui_box_spaced_padding--s:0\" class=\"c3bdfd4ac2 b96c49a28c c256f1a28a a18a170653 e865001853 dc9db40f5a ba98511f54\"><picture class=\"b7a691c583 f5c8371996\" style=\"--bui_image_width--s:100%;--bui_image_height--s:100%\"><img class=\"f6c12c77eb c0e44985a8 c09abd8a52 ca3dad4476\" src=\"https://lh3.googleusercontent.com/a/AGNmyxZMo8rECXNyN9ruApVZzWP7g-ET7LnTCcHVTBDQyvI=s96-c\" alt=\"\" role=\"presentation\" loading=\"lazy\"></picture></div><div class=\"aa225776f2 ca9d921c46\"><div class=\"b08850ce41 f546354b44\">Jyothi</div><div class=\"fff1944c52 fb14de7f14\"><img alt=\"United States\" src=\"https://t-cf.bstatic.com/design-assets/assets/v3.176.0/images-flags/Us.png\" class=\"b8d1620349\"><span class=\"d838fb5f41 aea5eccb71\"> <!-- -->United States</span></div></div></div></div><div data-testid=\"featuredreview-text\"><div><div class=\"b99b6ef58f d14152e7c3\"><span>\u201c</span><span>It has so much history! I also love its architecture and location.</span><span>\u201d</span></div></div></div><div data-testid=\"featuredreview-more\"><button tabindex=\"-1\" aria-label=\"Read more of Jyothi's review\" type=\"button\" class=\"de576f5064 bef8628e61 e0d8514d4d\"><span>Read more</span></button></div></div>",
+    "text": "Jyothi\nUnited States\n\u201cIt has so much history! I also love its architecture and location.\u201d\nRead more",
+    "author_candidates": [
+      {
+        "tag": "DIV",
+        "text": "Jyothi\nUnited States",
+        "testid": "featuredreview-avatar"
+      },
+      {
+        "tag": "DIV",
+        "text": "Jyothi\nUnited States",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "Jyothi\nUnited States",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "Jyothi",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "United States",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "United States",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "\u201cIt has so much history! I also love its architecture and location.\u201d",
+        "testid": "featuredreview-text"
+      },
+      {
+        "tag": "DIV",
+        "text": "\u201cIt has so much history! I also love its architecture and location.\u201d",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "\u201cIt has so much history! I also love its architecture and location.\u201d",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "\u201c",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "It has so much history! I also love its architecture and location.",
+        "testid": null
+      },
+      {
+        "tag": "SPAN",
+        "text": "\u201d",
+        "testid": null
+      },
+      {
+        "tag": "DIV",
+        "text": "Read more",
+        "testid": "featuredreview-more"
+      },
+      {
+        "tag": "SPAN",
+        "text": "Read more",
+        "testid": null
+      }
+    ],
+    "score_candidates": []
+  }
+]
