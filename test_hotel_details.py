@@ -1,86 +1,43 @@
 """
-Test script for hotel details endpoint
-Demonstrates how to fetch comprehensive hotel information
+Test hotel details endpoint
 """
-
 import requests
-import json
 
-# API Configuration
-BASE_URL = "http://127.0.0.1:8000"
-API_KEY = "user_123_secret_key"
+url = "http://127.0.0.1:8000/hotels/details"
+headers = {"access_token": "user_123_secret_key"}
+params = {"hotel_url": "https://www.booking.com/hotel/in/3bhk-villa-10-mins-from-lulu-mall.html"}
 
-def test_hotel_details():
-    """Test fetching detailed hotel information"""
+print("Testing hotel details API...")
+print(f"URL: {url}")
+print(f"Hotel URL: {params['hotel_url']}")
+print("\nThis may take 20-30 seconds...\n")
+
+response = requests.get(url, headers=headers, params=params, timeout=60)
+
+print(f"Status Code: {response.status_code}")
+
+if response.status_code == 200:
+    data = response.json()
+    print(f"\nHotel: {data['name']}")
+    print(f"Rating: {data['rating']}")
+    print(f"Address: {data.get('address', 'N/A')}")
+    print(f"\nAmenities: {len(data.get('amenities', []))}")
+    print(f"Reviews: {len(data.get('reviews', []))}")
+    print(f"Photos: {len(data.get('photos', []))}")
+    print(f"Room Types: {len(data.get('room_types', []))}")
     
-    # Example Booking.com hotel URL (Taj Mahal Palace Mumbai)
-    hotel_url = "https://www.booking.com/hotel/in/taj-mahal-palace.html"
-    
-    print("\n" + "="*70)
-    print("  TESTING HOTEL DETAILS ENDPOINT")
-    print("="*70)
-    print(f"\nFetching details for: {hotel_url}")
-    print("This may take 20-30 seconds...\n")
-    
-    headers = {"access_token": API_KEY}
-    params = {"hotel_url": hotel_url}
-    
-    try:
-        response = requests.get(
-            f"{BASE_URL}/hotels/details",
-            headers=headers,
-            params=params,
-            timeout=60
-        )
+    if data.get('reviews'):
+        print("\nFirst 3 reviews:")
+        for i, review in enumerate(data['reviews'][:3], 1):
+            print(f"\n{i}. {review['reviewer_name']} - Rating: {review['rating']}")
+            print(f"   {review['comment'][:100]}...")
+    else:
+        print("\n⚠️ No reviews found!")
         
-        if response.status_code == 200:
-            details = response.json()
-            
-            print("✅ SUCCESS! Hotel details fetched:\n")
-            print(f"📍 Hotel Name: {details['name']}")
-            print(f"⭐ Rating: {details['rating']}/5.0")
-            print(f"📍 Address: {details.get('address', 'N/A')}")
-            
-            print(f"\n🏨 Amenities ({len(details.get('amenities', []))}):")
-            for amenity in details.get('amenities', [])[:5]:
-                print(f"  - {amenity['name']} ({amenity['category']})")
-            if len(details.get('amenities', [])) > 5:
-                print(f"  ... and {len(details['amenities']) - 5} more")
-            
-            print(f"\n💬 Reviews ({len(details.get('reviews', []))}):")
-            for review in details.get('reviews', [])[:3]:
-                print(f"  - {review['reviewer_name']} ({review['rating']}/5.0)")
-                print(f"    \"{review['comment'][:100]}...\"")
-            
-            print(f"\n📸 Photos: {len(details.get('photos', []))} images")
-            
-            print(f"\n🛏️ Room Types ({len(details.get('room_types', []))}):")
-            for room in details.get('room_types', [])[:3]:
-                print(f"  - {room['name']}: {room['currency']} {room['price']}")
-            
-            print(f"\n🕐 Check-in: {details.get('check_in_time', 'N/A')}")
-            print(f"🕐 Check-out: {details.get('check_out_time', 'N/A')}")
-            
-            print("\n" + "="*70)
-            print("  FULL JSON RESPONSE")
-            print("="*70)
-            print(json.dumps(details, indent=2))
-            
-        else:
-            print(f"❌ Error: {response.status_code}")
-            print(response.text)
-            
-    except requests.exceptions.Timeout:
-        print("❌ Request timed out. The scraper may be taking longer than expected.")
-    except Exception as e:
-        print(f"❌ Error: {e}")
-
-if __name__ == "__main__":
-    print("\n🔍 Hotel Details API Test")
-    print("\nMake sure the API server is running:")
-    print("  uvicorn main:app --reload\n")
-    
-    try:
-        test_hotel_details()
-    except KeyboardInterrupt:
-        print("\n\nTest cancelled by user.")
+    # Save full response for inspection
+    import json
+    with open("hotel_details_response.json", "w") as f:
+        json.dump(data, f, indent=2)
+    print("\n✓ Full response saved to hotel_details_response.json")
+else:
+    print(f"Error: {response.text}")

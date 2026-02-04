@@ -1,0 +1,52 @@
+{
+  "cardCount": 25,
+  "linkTests": {
+    "a[data-testid=\"title-link\"]": {
+      "found": true,
+      "href": "https://www.booking.com/hotel/in/3bhk-villa-10-mins-from-lulu-mall.html?aid=304142&label=gen173nr-10CAQoggJCDHNlYXJjaF9rb2NoaUgzWARobIgBAZgBM7gBF8gBDNgBA-gBAfgBAYgCAagCAbgCh7GMzAbAAgHSAiRiZGE3NDZjMS1iYjZjLTQ3N2QtYjdlMS0xZWFiMWI5NzJmMDDYAgHgAgE&ucfs=1&arphpl=1&checkin=2026-02-11&checkout=2026-02-12&group_adults=2&req_adults=2&no_rooms=1&group_children=0&req_children=0&hpos=1&hapos=1&sr_order=popularity&srpvid=ed2146439fc501ab&srepoch=1770199176&all_sr_blocks=1573930701_428439160_8_0_0&highlighted_blocks=1573930701_428439160_8_0_0&matching_block_id=1573930701_428439160_8_0_0&sr_pri_blocks=1573930701_428439160_8_0_0__340000&from=searchresults",
+      "text": "3BHK Independent Villa Cochin - Holiday Home 10 mi"
+    },
+    "a[href*=\"/hotel/\"]": {
+      "found": true,
+      "href": "https://www.booking.com/hotel/in/3bhk-villa-10-mins-from-lulu-mall.html?aid=304142&label=gen173nr-10CAQoggJCDHNlYXJjaF9rb2NoaUgzWARobIgBAZgBM7gBF8gBDNgBA-gBAfgBAYgCAagCAbgCh7GMzAbAAgHSAiRiZGE3NDZjMS1iYjZjLTQ3N2QtYjdlMS0xZWFiMWI5NzJmMDDYAgHgAgE&ucfs=1&arphpl=1&checkin=2026-02-11&checkout=2026-02-12&group_adults=2&req_adults=2&no_rooms=1&group_children=0&req_children=0&hpos=1&hapos=1&sr_order=popularity&srpvid=ed2146439fc501ab&srepoch=1770199176&all_sr_blocks=1573930701_428439160_8_0_0&highlighted_blocks=1573930701_428439160_8_0_0&matching_block_id=1573930701_428439160_8_0_0&sr_pri_blocks=1573930701_428439160_8_0_0__340000&from=searchresults",
+      "text": ""
+    },
+    "a.e13098a59f": {
+      "found": false
+    },
+    "h3 a": {
+      "found": true,
+      "href": "https://www.booking.com/hotel/in/3bhk-villa-10-mins-from-lulu-mall.html?aid=304142&label=gen173nr-10CAQoggJCDHNlYXJjaF9rb2NoaUgzWARobIgBAZgBM7gBF8gBDNgBA-gBAfgBAYgCAagCAbgCh7GMzAbAAgHSAiRiZGE3NDZjMS1iYjZjLTQ3N2QtYjdlMS0xZWFiMWI5NzJmMDDYAgHgAgE&ucfs=1&arphpl=1&checkin=2026-02-11&checkout=2026-02-12&group_adults=2&req_adults=2&no_rooms=1&group_children=0&req_children=0&hpos=1&hapos=1&sr_order=popularity&srpvid=ed2146439fc501ab&srepoch=1770199176&all_sr_blocks=1573930701_428439160_8_0_0&highlighted_blocks=1573930701_428439160_8_0_0&matching_block_id=1573930701_428439160_8_0_0&sr_pri_blocks=1573930701_428439160_8_0_0__340000&from=searchresults",
+      "text": "3BHK Independent Villa Cochin - Holiday Home 10 mi"
+    },
+    "a[aria-label]": {
+      "found": false
+    },
+    "[data-testid=\"title\"] a": {
+      "found": false
+    },
+    "a": "4 links found"
+  },
+  "allLinks": [
+    {
+      "href": "https://www.booking.com/hotel/in/3bhk-villa-10-mins-from-lulu-mall.html?aid=304142&label=gen173nr-10CAQoggJCDHNlYXJjaF9rb2NoaUgzWARobIgBAZgBM7gBF8gBDNgBA-gBAfgBAYgCAagCAbgCh7GMzAbAAgHSAiRiZGE3NDZjMS1iYjZjLTQ3N2QtYjdlMS0xZWFiMWI5NzJmMDDYAgHgAgE&ucfs=1&arphpl=1&checkin=2026-02-11&checkout=2026-02-12&group_adults=2&req_adults=2&no_rooms=1&group_children=0&req_children=0&hpos=1&hapos=1&sr_order=popularity&srpvid=ed2146439fc501ab&srepoch=1770199176&all_sr_blocks=1573930701_428439160_8_0_0&highlighted_blocks=1573930701_428439160_8_0_0&matching_block_id=1573930701_428439160_8_0_0&sr_pri_blocks=1573930701_428439160_8_0_0__340000&from=searchresults",
+      "text": "",
+      "hasHotel": true
+    },
+    {
+      "href": "https://www.booking.com/hotel/in/3bhk-villa-10-mins-from-lulu-mall.html?aid=304142&label=gen173nr-10CAQoggJCDHNlYXJjaF9rb2NoaUgzWARobIgBAZgBM7gBF8gBDNgBA-gBAfgBAYgCAagCAbgCh7GMzAbAAgHSAiRiZGE3NDZjMS1iYjZjLTQ3N2QtYjdlMS0xZWFiMWI5NzJmMDDYAgHgAgE&ucfs=1&arphpl=1&checkin=2026-02-11&checkout=2026-02-12&group_adults=2&req_adults=2&no_rooms=1&group_children=0&req_children=0&hpos=1&hapos=1&sr_order=popularity&srpvid=ed2146439fc501ab&srepoch=1770199176&all_sr_blocks=1573930701_428439160_8_0_0&highlighted_blocks=1573930701_428439160_8_0_0&matching_block_id=1573930701_428439160_8_0_0&sr_pri_blocks=1573930701_428439160_8_0_0__340000&from=searchresults",
+      "text": "3BHK Independent Villa Cochin ",
+      "hasHotel": true
+    },
+    {
+      "href": "https://www.booking.com/hotel/in/3bhk-villa-10-mins-from-lulu-mall.html?aid=304142&label=gen173nr-10CAQoggJCDHNlYXJjaF9rb2NoaUgzWARobIgBAZgBM7gBF8gBDNgBA-gBAfgBAYgCAagCAbgCh7GMzAbAAgHSAiRiZGE3NDZjMS1iYjZjLTQ3N2QtYjdlMS0xZWFiMWI5NzJmMDDYAgHgAgE&ucfs=1&arphpl=1&checkin=2026-02-11&checkout=2026-02-12&group_adults=2&req_adults=2&no_rooms=1&group_children=0&req_children=0&hpos=1&hapos=1&sr_order=popularity&srpvid=ed2146439fc501ab&srepoch=1770199176&all_sr_blocks=1573930701_428439160_8_0_0&highlighted_blocks=1573930701_428439160_8_0_0&matching_block_id=1573930701_428439160_8_0_0&sr_pri_blocks=1573930701_428439160_8_0_0__340000&from=searchresults&map=1",
+      "text": "CochinShow on map",
+      "hasHotel": true
+    },
+    {
+      "href": "https://www.booking.com/hotel/in/3bhk-villa-10-mins-from-lulu-mall.html?aid=304142&label=gen173nr-10CAQoggJCDHNlYXJjaF9rb2NoaUgzWARobIgBAZgBM7gBF8gBDNgBA-gBAfgBAYgCAagCAbgCh7GMzAbAAgHSAiRiZGE3NDZjMS1iYjZjLTQ3N2QtYjdlMS0xZWFiMWI5NzJmMDDYAgHgAgE&ucfs=1&arphpl=1&checkin=2026-02-11&checkout=2026-02-12&group_adults=2&req_adults=2&no_rooms=1&group_children=0&req_children=0&hpos=1&hapos=1&sr_order=popularity&srpvid=ed2146439fc501ab&srepoch=1770199176&all_sr_blocks=1573930701_428439160_8_0_0&highlighted_blocks=1573930701_428439160_8_0_0&matching_block_id=1573930701_428439160_8_0_0&sr_pri_blocks=1573930701_428439160_8_0_0__340000&from=searchresults",
+      "text": "See availability",
+      "hasHotel": true
+    }
+  ]
+}

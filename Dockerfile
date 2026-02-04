@@ -6,14 +6,16 @@ WORKDIR /app
 
 # Install Python dependencies
 COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
 
 # Copy application code
 COPY . .
 
 # Expose port (Railway sets PORT env var)
-ENV PORT=8000
-EXPOSE $PORT
+# Expose port 8080 (Fly default)
+ENV PORT=8080
+EXPOSE 8080
 
 # Run the application
-CMD uvicorn main:app --host 0.0.0.0 --port $PORT
+CMD python -m uvicorn main:app --host 0.0.0.0 --port 8080

@@ -1,0 +1,34 @@
+{
+  "hotel_id": 8730,
+  "name": "3BHK Independent Villa Cochin - Holiday Home 10 minutes from Lulu Mall Kochi - House in Ernakulam",
+  "rating": 0.0,
+  "address": "KVMR 63C Manjummel, Udyogamandal PO, 683501 Cochin, India, KVMR 63C Manjummel, Udyogamandal PO, Kerala, 683501, India",
+  "description": "Elegant Accommodation: 3BHK Independent Villa Cochin in Cochin offers a spacious villa with three bedrooms and three bathrooms. The property features a private entrance, ensuring privacy and comfort for all guests.\n\nModern Amenities: Guests enjoy a garden, terrace, and free WiFi. The villa is equipped with air-conditioning, a fully fitted kitchen, washing machine, and streaming services. Additional amenities include a dining area, balcony, and free toiletries.\n\nConvenient Location: Located 18 km from Cochin International Airport, the villa is close to attractions such as Cochin Shipyard (15 km) and Kerala Museum (4.4 km). Free on-site private parking is available for guests.",
+  "amenities": [
+    {
+      "category": "Popular",
+      "name": "Free Wifi"
+    },
+    {
+      "category": "Popular",
+      "name": "Family rooms"
+    },
+    {
+      "category": "Popular",
+      "name": "Free parking"
+    }
+  ],
+  "reviews": [],
+  "photos": [
+    {
+      "url": "https://cf.bstatic.com/xdata/images/hotel/max500/816618387.jpg?k=8e2970a988fa553bba992a1f1db1a356829cdb57b4f716030cbcc409afbbb4b8&o=&hp=1",
+      "caption": null
+    }
+  ],
+  "room_types": [],
+  "check_in_time": "",
+  "check_out_time": "",
+  "policies": "",
+  "contact_phone": "",
+  "contact_email": ""
+}

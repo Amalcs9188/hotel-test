@@ -87,6 +87,7 @@ class PlaywrightBookingScraper:
                         timezone_id='America/New_York'
                     )
                     
+                    page = context.new_page()
                     logger.info(f"Navigating to: {url}")
                     
                     # Performance optimization: Block light resources (fonts, media)
@@ -284,17 +285,30 @@ def fetch_hotel_details(hotel_url: str) -> Optional[Dict]:
     try:
         logger.info(f"Fetching hotel details from: {hotel_url}")
         with sync_playwright() as p:
-            # Launch browser with slightly more stealth
+            # Launch browser with enhanced stealth settings
             browser = p.chromium.launch(
                 headless=True,
-                args=['--disable-blink-features=AutomationControlled']
+                args=[
+                    '--disable-blink-features=AutomationControlled',
+                    '--no-sandbox',
+                    '--disable-setuid-sandbox',
+                    '--disable-dev-shm-usage'
+                ]
             )
             context = browser.new_context(
                 viewport={'width': 1920, 'height': 1080},
                 user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
-                locale='en-US'
+                locale='en-US',
+                timezone_id='America/New_York'
             )
             page = context.new_page()
+            
+            # Mask webdriver property
+            page.add_init_script("""
+                Object.defineProperty(navigator, 'webdriver', {
+                    get: () => undefined
+                });
+            """)
             
             # Performance optimization: Block light resources (fonts, media)
             # Keeping images and stylesheets as they are often needed for correct DOM rendering/scripts
@@ -309,7 +323,9 @@ def fetch_hotel_details(hotel_url: str) -> Optional[Dict]:
             # Pipe console logs
             page.on('console', lambda msg: logger.info(f"BROWSER: {msg.text}"))
             
-            # Navigate to hotel page
+            # Small delay to make behavior more human-like
+            time.sleep(1)
+            
             # Navigate to hotel page
             logger.info(f"Navigating to hotel page...")
             page.goto(hotel_url, wait_until='domcontentloaded', timeout=60000)
@@ -541,25 +557,35 @@ def fetch_hotel_details(hotel_url: str) -> Optional[Dict]:
                     }
                 }
                 
-                // Extract amenities
-                const amenityGroups = document.querySelectorAll('[data-testid="facility-group"], [data-testid="facility-group-container"], .hp-facility-block, .facilitiesChecklistSection, .b43e553776');
-                amenityGroups.forEach(group => {
-                    const titleEl = group.querySelector('[data-testid="facility-group-title"], .bui-title__text, h3, .e7addce19e');
-                    const category = titleEl ? titleEl.textContent.trim() : 'General';
-                    
-                    const items = group.querySelectorAll('li, [data-testid="facility-item"], .bui-list__item, [data-testid="facility-group-item"]');
-                    items.forEach(item => {
-                        const name = item.textContent.trim();
-                        if (name) {
-                            details.amenities.push({ category, name });
+                // Extract amenities - ONLY "Most popular facilities"
+                const popularWrapper = document.querySelector('[data-testid="property-most-popular-facilities-wrapper"], .hp_desc_important_facilities, .hp-most-popular-facilities');
+                if (popularWrapper) {
+                    const items = popularWrapper.querySelectorAll('span, li, [data-testid="facility-item"]');
+                    const seen = new Set();
+                    items.forEach(el => {
+                        const name = el.textContent.trim();
+                        if (name && 
+                            name.length > 0 && 
+                            name.length < 60 && 
+                            !name.includes('Most popular') && 
+                            !name.includes('amenities') && 
+                            !name.includes('facilities') &&
+                            !seen.has(name)) {
+                            details.amenities.push({ category: 'Popular', name });
+                            seen.add(name);
                         }
                     });
-                });
+                }
                 
-                // Fallback for amenities if empty
+                // Fallback for other structures
                 if (details.amenities.length === 0) {
-                    document.querySelectorAll('.important_facility, .hp_facility_list li, .facility-item').forEach(el => {
-                        details.amenities.push({ category: 'Popular', name: el.textContent.trim() });
+                    const altSelectors = ['.important_facility', '.hp_facility_list li', '.property-highlights li'];
+                    altSelectors.forEach(s => {
+                        if (details.amenities.length > 0) return;
+                        document.querySelectorAll(s).forEach(el => {
+                            const name = el.textContent.trim();
+                            if (name) details.amenities.push({ category: 'Popular', name });
+                        });
                     });
                 }
                 
