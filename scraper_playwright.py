@@ -220,6 +220,19 @@ def fetch_hotel_details(hotel_url: str) -> Optional[Dict]:
                 # High-speed progressive scroll
                 page.evaluate("window.scrollTo(0, 800);")
                 time.sleep(0.2)
+                
+                # Scroll to facilities section to load full amenities
+                try:
+                    page.evaluate("document.querySelector('#hp_facilities_box, [href=\"#hp_facilities_box\"]')?.scrollIntoView();")
+                    time.sleep(0.3)
+                    # Click "Show all facilities" if it exists
+                    show_all = page.query_selector('a[href="#hotelTmpl"], button[data-testid="show-all-facilities"], .show_all_facilities_trigger')
+                    if show_all:
+                        show_all.click()
+                        time.sleep(0.5)
+                except: pass
+                
+                # Scroll to availability for room types
                 page.evaluate("document.querySelector('#availability_target')?.scrollIntoView();")
                 time.sleep(0.4) # Brief wait for rooms
                 
@@ -262,11 +275,34 @@ def fetch_hotel_details(hotel_url: str) -> Optional[Dict]:
                         d.description = descEl ? descEl.innerText.trim() : '';
                     }
 
-                    // 3. Amenities (Aligned with HotelAmenity model)
+                    // 3. Amenities (Full extraction without limits)
                     const seenAms = new Set();
+                    
+                    // First, popular facilities
                     document.querySelectorAll('.hp_desc_important_facilities div, [data-testid="property-most-popular-facilities-wrapper"] span, .important_facility').forEach(el => {
                         const text = el.innerText.trim();
-                        if (text && !seenAms.has(text) && seenAms.size < 15) {
+                        if (text && !seenAms.has(text)) {
+                            seenAms.add(text);
+                            d.amenities.push({ category: 'Popular', name: text });
+                        }
+                    });
+
+                    // Next, full facilities list by category
+                    document.querySelectorAll('.hotel_facilities_block, .hp-facilities-box, #hp_facilities_box .hotel_facilities_block').forEach(block => {
+                        const category = block.querySelector('h3, h4')?.innerText?.trim() || 'General';
+                        block.querySelectorAll('li, .hp-facilites-list li').forEach(item => {
+                            const text = item.innerText.trim();
+                            if (text && !seenAms.has(text)) {
+                                seenAms.add(text);
+                                d.amenities.push({ category: category, name: text });
+                            }
+                        });
+                    });
+
+                    // Catch-all for any other lists in the facilities area
+                    document.querySelectorAll('#hp_facilities_box li, [data-testid="property-section-content"] li').forEach(el => {
+                        const text = el.innerText.trim();
+                        if (text && !seenAms.has(text)) {
                             seenAms.add(text);
                             d.amenities.push({ category: 'General', name: text });
                         }
