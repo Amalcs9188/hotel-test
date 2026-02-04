@@ -1,0 +1,48 @@
+meta {
+  name: Search Hotels - Mumbai
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url}}/hotels/search?city=Mumbai
+  body: none
+  auth: none
+}
+
+headers {
+  access_token: {{api_key}}
+}
+
+params:query {
+  city: Mumbai
+}
+
+docs {
+  # Search Hotels in Mumbai
+  
+  Fetches real-time hotel data from Booking.com for Mumbai.
+  
+  **Response includes:**
+  - Hotel ID
+  - Hotel name
+  - Price (INR)
+  - Rating (out of 5)
+  - **Hotel URL** ← Use this to get full details!
+  
+  **Example Response:**
+  ```json
+  {
+    "hotel_id": 86566,
+    "name": "Atlantiis Suites",
+    "price": 5879.0,
+    "currency": "INR",
+    "rating": 4.2,
+    "url": "https://www.booking.com/hotel/in/atlantiis-suites.html"
+  }
+  ```
+  
+  **Next Step:** Copy the `url` field and use it in request #8 to get full hotel details!
+  
+  **Note:** First request may take 15-25 seconds (real scraping), subsequent requests are cached.
+}

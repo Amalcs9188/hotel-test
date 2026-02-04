@@ -1,0 +1,48 @@
+meta {
+  name: Get Hotel Details - From Search Result
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{base_url}}/hotels/details?hotel_url=https://www.booking.com/hotel/in/atlantiis-suites-by-signature-stayz-near-delhi-airport.html
+  body: none
+  auth: none
+}
+
+headers {
+  access_token: {{api_key}}
+}
+
+params:query {
+  hotel_url: https://www.booking.com/hotel/in/atlantiis-suites-by-signature-stayz-near-delhi-airport.html
+}
+
+docs {
+  # Get Hotel Details Using URL from Search Results
+  
+  **Workflow:**
+  1. Run "Search Hotels - Delhi" request
+  2. Copy the `url` field from any hotel in the response
+  3. Paste it here in the `hotel_url` parameter
+  4. Send the request to get full details
+  
+  **Example:**
+  If search returns:
+  ```json
+  {
+    "hotel_id": 86566,
+    "name": "Atlantiis Suites By Signature Stayz",
+    "url": "https://www.booking.com/hotel/in/atlantiis-suites.html"
+  }
+  ```
+  
+  Copy the `url` value and use it to fetch complete details including:
+  - Amenities
+  - Reviews
+  - Photos
+  - Room types
+  - Policies
+  
+  **Note:** The URL is now automatically extracted during search!
+}

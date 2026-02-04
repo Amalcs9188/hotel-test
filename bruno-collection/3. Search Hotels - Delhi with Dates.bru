@@ -1,0 +1,43 @@
+meta {
+  name: Search Hotels - Delhi with Dates
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{base_url}}/hotels/search?city=Delhi&checkin=2026-03-01&checkout=2026-03-05
+  body: none
+  auth: none
+}
+
+headers {
+  access_token: {{api_key}}
+}
+
+params:query {
+  city: Delhi
+  checkin: 2026-03-01
+  checkout: 2026-03-05
+}
+
+docs {
+  # Search Hotels in Delhi with Specific Dates
+  
+  Fetches hotels for specific check-in and check-out dates.
+  
+  **Parameters:**
+  - `city`: Delhi
+  - `checkin`: 2026-03-01 (YYYY-MM-DD format)
+  - `checkout`: 2026-03-05 (YYYY-MM-DD format)
+  
+  **Response includes hotel URL:**
+  Each hotel in the response has a `url` field pointing to its Booking.com page.
+  
+  **Workflow:**
+  1. Run this request
+  2. Copy any hotel's `url` from the response
+  3. Go to request #8 "Get Hotel Details - From Search Result"
+  4. Paste the URL to get full details (amenities, reviews, photos, etc.)
+  
+  **Tip:** Change the dates to test different date ranges.
+}

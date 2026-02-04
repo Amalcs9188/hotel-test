@@ -1,0 +1,12 @@
+opencollection: 1.0.0
+info:
+  name: "Hotel Fast Test"
+  type: workspace
+
+collections:
+  - name: "Hotel Data API"
+    path: ".."
+
+specs:
+
+docs: ''

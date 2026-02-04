@@ -1,0 +1,44 @@
+meta {
+  name: Get Hotel Details - Taj Mahal Palace
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{base_url}}/hotels/details?hotel_url=https://www.booking.com/hotel/in/taj-mahal-palace.html
+  body: none
+  auth: none
+}
+
+headers {
+  access_token: {{api_key}}
+}
+
+params:query {
+  hotel_url: https://www.booking.com/hotel/in/taj-mahal-palace.html
+}
+
+docs {
+  # Get Comprehensive Hotel Details
+  
+  Fetches complete information about Taj Mahal Palace Mumbai.
+  
+  **Response includes:**
+  - Hotel name, rating, address
+  - Description
+  - Amenities (categorized)
+  - Guest reviews (top 10)
+  - Photos (up to 15)
+  - Room types with pricing
+  - Check-in/out times
+  - Hotel policies
+  - Contact information
+  
+  **Note:** This request takes 20-30 seconds as it scrapes the full hotel page.
+  
+  **To test other hotels:**
+  1. Go to Booking.com
+  2. Find a hotel
+  3. Copy the URL
+  4. Replace the `hotel_url` parameter
+}

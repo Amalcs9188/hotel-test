@@ -1,0 +1,31 @@
+meta {
+  name: Test - Invalid City (Should Return 404)
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{base_url}}/hotels/search?city=InvalidCityName123
+  body: none
+  auth: none
+}
+
+headers {
+  access_token: {{api_key}}
+}
+
+params:query {
+  city: InvalidCityName123
+}
+
+docs {
+  # Test Invalid City
+  
+  This request searches for a non-existent city.
+  
+  **Expected Response:**
+  - Status: 404 Not Found
+  - Body: `{"detail": "No hotels found for this city"}`
+  
+  The API will attempt to scrape, find no results, and return 404.
+}

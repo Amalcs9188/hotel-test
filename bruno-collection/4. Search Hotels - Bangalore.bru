@@ -1,0 +1,41 @@
+meta {
+  name: Search Hotels - Bangalore
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{base_url}}/hotels/search?city=Bangalore
+  body: none
+  auth: none
+}
+
+headers {
+  access_token: {{api_key}}
+}
+
+params:query {
+  city: Bangalore
+}
+
+docs {
+  # Search Hotels in Bangalore
+  
+  Fetches real-time hotel data for Bangalore.
+  
+  **Each hotel includes:**
+  - Basic info (name, price, rating)
+  - **URL** to Booking.com page
+  
+  **To get full hotel details:**
+  1. Copy the `url` field from any hotel
+  2. Use it in request #8 "Get Hotel Details - From Search Result"
+  
+  **Try other cities:**
+  - Mumbai
+  - Delhi
+  - Bangalore
+  - Goa
+  - Jaipur
+  - Any Indian city
+}

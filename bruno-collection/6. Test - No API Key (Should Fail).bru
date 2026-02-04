@@ -1,0 +1,27 @@
+meta {
+  name: Test - No API Key (Should Fail)
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{base_url}}/hotels/search?city=Mumbai
+  body: none
+  auth: none
+}
+
+params:query {
+  city: Mumbai
+}
+
+docs {
+  # Test Authentication - No API Key
+  
+  This request intentionally **does not include** the API key header.
+  
+  **Expected Response:**
+  - Status: 403 Forbidden
+  - Body: `{"detail": "Invalid or Missing API Key"}`
+  
+  This demonstrates that the API is properly secured.
+}

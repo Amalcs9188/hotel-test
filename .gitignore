@@ -1,0 +1,6 @@
+__pycache__/
+*.zip
+lambda-deploy/
+.env
+.pytest_cache/
+*.pyc

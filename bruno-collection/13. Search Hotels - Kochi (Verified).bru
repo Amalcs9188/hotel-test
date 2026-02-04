@@ -1,0 +1,50 @@
+meta {
+  name: Search Hotels - Kochi (Verified Working)
+  type: http
+  seq: 13
+}
+
+get {
+  url: {{base_url}}/hotels/search?city=Kochi
+  body: none
+  auth: none
+}
+
+headers {
+  access_token: {{api_key}}
+}
+
+params:query {
+  city: Kochi
+}
+
+docs {
+  # Search Hotels in Kochi - VERIFIED WORKING ✅
+  
+  This city is **confirmed working** with real data from Booking.com!
+  
+  **Expected Response:**
+  ```json
+  {
+    "hotel_id": 34607,
+    "name": "Treebo Time Square Marine Drive",
+    "price": 2585.0,
+    "currency": "INR",
+    "rating": 3.8,
+    "url": "https://www.booking.com/hotel/in/time-square-cochin-688001.html"
+  }
+  ```
+  
+  **Features:**
+  - ✅ Real hotel names
+  - ✅ Prices in INR
+  - ✅ Ratings extracted
+  - ✅ Booking.com URLs
+  
+  **Performance:**
+  - First request: 15-25 seconds
+  - Cached: Instant
+  
+  **Other verified cities:**
+  - Singapore, Bangkok, Paris, Hyderabad, Jaipur
+}
