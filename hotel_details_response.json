@@ -1,5 +1,5 @@
 {
-  "hotel_id": 79088,
+  "hotel_id": 62377,
   "name": "The Taj Mahal Palace, Mumbai",
   "rating": 4.6,
   "address": "Apollo Bunder Road The Taj Mahal Palace, Colaba, 400001 Mumbai, India",
@@ -78,88 +78,7 @@
       "date": null
     }
   ],
-  "photos": [
-    {
-      "url": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/103705059.jpg?k=9e078265b31ad1815a573da8ed2a665f863e3925e1efd730df703421868a2ada&o=&hp=1",
-      "caption": ""
-    },
-    {
-      "url": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/176113777.jpg?k=982b8710d50b0e5b6e2db2b275928784748b993a039a1c3b1257e58b19a235fc&o=&hp=1",
-      "caption": ""
-    },
-    {
-      "url": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/103556882.jpg?k=b97773ac9d16d032990d528f2b9fc697e2a76eca4f62152b979f1fc47548f021&o=&hp=1",
-      "caption": ""
-    },
-    {
-      "url": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/101834007.jpg?k=263d03927074e577b2210e37602d0dbb87d2f8404c28a9e340d4e08296c92df9&o=&hp=1",
-      "caption": ""
-    },
-    {
-      "url": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/103704962.jpg?k=7118f1beb656611131fd8eb80287eb10774d2b4d2df28324edf40102611675db&o=&hp=1",
-      "caption": ""
-    },
-    {
-      "url": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/624440867.jpg?k=90bfdf328df680b9c562082df594e32ed48e321fc92bac4e4ebeef50e0061bda&o=&hp=1",
-      "caption": ""
-    },
-    {
-      "url": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/103704804.jpg?k=588075213b05347681008bb4316faf42bd54714a378eb1d438d3d877350d62c0&o=&hp=1",
-      "caption": ""
-    },
-    {
-      "url": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/102614890.jpg?k=5d8cd6db09ab323f75b06fbcefb6976b257f9d64648cde0e01f3c2b25b65331e&o=&hp=1",
-      "caption": ""
-    },
-    {
-      "url": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/259097249.jpg?k=e6449bd35aef454f8e0401a59d66c1212de1b353041f4999afb5b0fdffee97a6&o=&hp=1",
-      "caption": ""
-    },
-    {
-      "url": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/305159686.jpg?k=ae35948fc9b37da38b9f9662d93c0623f6525cd659852af15cedaaa72f543619&o=&hp=1",
-      "caption": ""
-    },
-    {
-      "url": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/216924011.jpg?k=6b88b22be777fcc6a45b505c9b8b4ba6e3a10df67190996fc9eeceb56e5ffdc4&o=&hp=1",
-      "caption": ""
-    },
-    {
-      "url": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/103703163.jpg?k=760f615013b8331e247fcd22e5a6c98be3a2dc24f664c74021c28dc820acbaaf&o=&hp=1",
-      "caption": ""
-    },
-    {
-      "url": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/103706033.jpg?k=868af9f6b4298f370c25a54b92733d3b93e063b18afe13c97dc8471343a397a7&o=&hp=1",
-      "caption": ""
-    },
-    {
-      "url": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/176113646.jpg?k=8c8b8207d416d7f51cce910a578fd570cf5e8da93be2e6c6ddb81e39237c0780&o=&hp=1",
-      "caption": ""
-    },
-    {
-      "url": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/176113631.jpg?k=d5e06a355909d73685feb07938bdbbf723e9dae35cb237ea496a6129b7d94aef&o=&hp=1",
-      "caption": ""
-    },
-    {
-      "url": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/103705035.jpg?k=513519ce602528df999333f5cc1a33cf2709c5b50412e71f9295a2c42bf84d0d&o=&hp=1",
-      "caption": ""
-    },
-    {
-      "url": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/152822703.jpg?k=06d8a8497fdd78c3d9aeddfcb48d3a36879352caf1960c8f58221130cdd7e509&o=&hp=1",
-      "caption": ""
-    },
-    {
-      "url": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/103704301.jpg?k=a74278d10eafeebe376f6ebb6dbaf87f34fb8b9da2d336b2adc3d8e545620223&o=&hp=1",
-      "caption": ""
-    },
-    {
-      "url": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/103556733.jpg?k=a4d4d421cb0a31d374b9fb1761cb7e65e25643461d247c134f448b87b7cfd798&o=&hp=1",
-      "caption": ""
-    },
-    {
-      "url": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/103556553.jpg?k=285a1caccfeb7c59854d07a400136a3681564135023a7894a113d08e65a054c2&o=&hp=1",
-      "caption": ""
-    }
-  ],
+  "photos": [],
   "room_types": [],
   "check_in_time": null,
   "check_out_time": null,

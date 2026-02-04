@@ -41,9 +41,6 @@ class PlaywrightBookingScraper:
                 return route.abort()
                 
             if resource_type == "image":
-                # Allow images from booking CDN only
-                if "bstatic.com" in url or "booking.com" in url:
-                    return route.continue_()
                 return route.abort()
             
             # Allow all booking-related scripts and AJAX calls
@@ -220,37 +217,25 @@ def fetch_hotel_details(hotel_url: str) -> Optional[Dict]:
                         logger.warning("WAF challenge did not resolve in time.")
 
                 # 2. Stabilization & Interaction
-                # Progressive scroll to trigger lazy loads
-                page.evaluate("window.scrollTo(0, 1000);")
-                time.sleep(0.3)
+                # High-speed progressive scroll
+                page.evaluate("window.scrollTo(0, 800);")
+                time.sleep(0.2)
                 page.evaluate("document.querySelector('#availability_target')?.scrollIntoView();")
-                time.sleep(0.8) # Wait for table load
-                page.evaluate("window.scrollTo(0, 10000);") # Bottom for footer/extras
+                time.sleep(0.4) # Brief wait for rooms
                 
-                # Trigger Reviews if missing
+                # Trigger Reviews only if really needed (already getting many from DOM)
                 try:
-                    # Check for various review triggers and click the first one found
-                    triggers = [
-                        '#reviews-tab-trigger',
-                        '[data-testid="review-score-link"]',
-                        '[data-testid="review-score-read-all"]',
-                        '[data-testid="read-all-actionable"]',
-                        '.hp_nav_reviews_link'
-                    ]
-                    for selector in triggers:
-                        trigger = page.query_selector(selector)
-                        if trigger and trigger.is_visible():
-                            logger.info(f"Found review trigger {selector}, clicking...")
-                            trigger.scroll_into_view_if_needed()
+                    review_count = page.evaluate("document.querySelectorAll('[data-testid=\"review-card\"], .review_item').length")
+                    if review_count < 3:
+                        trigger = page.query_selector('#reviews-tab-trigger, [data-testid="read-all-actionable"]')
+                        if trigger:
                             trigger.click()
-                            time.sleep(1.5) # Wait for AJAX load
-                            break
-                except Exception as e:
-                    logger.warning(f"Failed to trigger reviews: {e}")
+                            time.sleep(0.8)
+                except: pass
 
-                # Final wait for core content to be present
+                # Final wait for core content
                 try:
-                    page.wait_for_selector('[data-testid="property-name"], h1, h2', timeout=5000)
+                    page.wait_for_selector('[data-testid="property-name"]', timeout=3000)
                 except: pass
 
                 # --- Extraction Logic ---
@@ -342,37 +327,8 @@ def fetch_hotel_details(hotel_url: str) -> Optional[Dict]:
                         if (d.reviews.length >= 3) break;
                     }
 
-                    // 5. Photos extraction (Aligned with HotelPhoto model)
-                    const photoUrls = new Set();
-                    const photoSelectors = [
-                        '.hp-gallery-imgs img',
-                        '[data-testid="gallery-image"] img',
-                        '.bh-photo-grid-item img',
-                        '.hotel_main_gallery img',
-                        '.hp-gallery-image img'
-                    ];
-                    for (const sel of photoSelectors) {
-                        document.querySelectorAll(sel).forEach(img => {
-                            let src = img.getAttribute('data-lazy') || img.src;
-                            if (src && src.startsWith('http') && !photoUrls.has(src) && photoUrls.size < 20) {
-                                photoUrls.add(src);
-                                d.photos.push({ url: src, caption: img.alt || '' });
-                            }
-                        });
-                    }
-
-                    // Script fallback for photos
-                    if (d.photos.length < 5) {
-                        const html = document.documentElement.innerHTML;
-                        const photoMatches = html.matchAll(/large_url:\\s*'(https:\/\/cf\.bstatic\.com\/[^']+)'/g);
-                        for (const m of photoMatches) {
-                            if (photoUrls.size >= 20) break;
-                            if (!photoUrls.has(m[1])) {
-                                photoUrls.add(m[1]);
-                                d.photos.push({ url: m[1], caption: '' });
-                            }
-                        }
-                    }
+                    // 5. Photos extraction (Skipped as requested)
+                    d.photos = [];
 
                     // 6. Room Types extraction (Aligned with RoomType model)
                     const roomNames = new Set();
